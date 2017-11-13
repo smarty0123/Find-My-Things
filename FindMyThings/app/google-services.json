@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "269575640824",
+    "firebase_url": "https://find-my-things-ea377.firebaseio.com",
+    "project_id": "find-my-things-ea377",
+    "storage_bucket": "find-my-things-ea377.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:269575640824:android:aeb7713b874cdffe",
+        "android_client_info": {
+          "package_name": "finalproject.se.kmitl.findmythings"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "269575640824-digrhj7metr7hol2rrh8lufq9dve6d1h.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "finalproject.se.kmitl.findmythings",
+            "certificate_hash": "870d58767e5f41275577c3aae5dff25efe9a258f"
+          }
+        },
+        {
+          "client_id": "269575640824-ufnf1f6rj9qn5i2udpljmfp56ariqpsc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDkC887ao6wl6lt-U-bkGcg46U_QbYbeQA"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "269575640824-ufnf1f6rj9qn5i2udpljmfp56ariqpsc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

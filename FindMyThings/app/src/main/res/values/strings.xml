@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Find My Things</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string-array name="planets_array">
+        <item>มือถือ</item>
+        <item>กุญแจ</item>
+        <item>บัตรนักศึกษา</item>
+        <item>กระเป๋า</item>
+        <item>อื่นๆ</item>
+    </string-array>
+    <string name="title_activity_upload_pic">UploadPicActivity</string>
+</resources>
