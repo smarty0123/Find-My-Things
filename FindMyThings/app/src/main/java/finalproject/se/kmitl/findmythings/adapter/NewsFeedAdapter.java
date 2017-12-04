@@ -12,9 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import finalproject.se.kmitl.findmythings.R;
-import finalproject.se.kmitl.findmythings.adapter.holder.FoundThingsHolder;
 import finalproject.se.kmitl.findmythings.adapter.holder.NewsFeedHolder;
-import finalproject.se.kmitl.findmythings.model.FoundThingsPost;
 import finalproject.se.kmitl.findmythings.model.NewsFeed;
 
 /**

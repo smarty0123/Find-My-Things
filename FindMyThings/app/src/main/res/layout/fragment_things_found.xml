@@ -17,7 +17,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|right"
         android:layout_margin="16dp"
-        android:src="@mipmap/ic_add_circle_outline_black_24dp"
+        android:src="@mipmap/ic_add_white_24dp"
         fab:fab_colorNormal="@color/colorAccent"
         fab:fab_colorPressed="@android:color/holo_red_light"
         fab:fab_colorRipple="@android:color/holo_red_light" />

@@ -9,14 +9,6 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <ImageView
-            android:id="@+id/postImage"
-            android:layout_width="match_parent"
-            android:layout_height="250dp"
-            android:adjustViewBounds="true"
-            android:scaleType="centerCrop"
-            android:src="@mipmap/add_btn" />
-
         <TextView
             android:id="@+id/postTitle"
             android:layout_width="match_parent"
@@ -25,6 +17,14 @@
             android:text="POST TITLE"
             android:textSize="16dp"
             android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/postImage"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/add_btn" />
 
 
     </LinearLayout>

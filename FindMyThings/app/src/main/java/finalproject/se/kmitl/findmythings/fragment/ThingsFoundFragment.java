@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -30,7 +31,7 @@ import finalproject.se.kmitl.findmythings.model.PostModel;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ThingsFoundFragment extends Fragment implements View.OnClickListener{
+public class ThingsFoundFragment extends Fragment implements View.OnClickListener {
     private FloatingActionButton btnNewPost;
     private RecyclerView recyclerView;
     private DatabaseReference mDatabase;
@@ -51,6 +52,7 @@ public class ThingsFoundFragment extends Fragment implements View.OnClickListene
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment\
         View view = inflater.inflate(R.layout.fragment_things_found, container, false);
+
         initInstance(view);
         setupRecyclerView();
         storeFoundPost();
@@ -58,6 +60,7 @@ public class ThingsFoundFragment extends Fragment implements View.OnClickListene
     }
 
     private void initInstance(View view) {
+
         recyclerView = view.findViewById(R.id.foundThingsList);
         btnNewPost = view.findViewById(R.id.fabFound);
         btnNewPost.setOnClickListener(this);
@@ -115,7 +118,7 @@ public class ThingsFoundFragment extends Fragment implements View.OnClickListene
             postModel.addFoundThingsList(foundThingsPost);
         }
         int position = foundThingsAdapter.getItemCount() - 1;
-        if(position >= 0){
+        if (position >= 0) {
             recyclerView.smoothScrollToPosition(position);
         }
         //foundThingsAdapter.notifyDataSetChanged();

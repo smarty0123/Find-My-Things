@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -23,6 +24,7 @@ import java.util.Iterator;
 
 import finalproject.se.kmitl.findmythings.activity.CreateNewPostActivity;
 import finalproject.se.kmitl.findmythings.R;
+import finalproject.se.kmitl.findmythings.activity.MainActivity;
 import finalproject.se.kmitl.findmythings.adapter.FindThingsAdapter;
 import finalproject.se.kmitl.findmythings.model.FindThingsPost;
 import finalproject.se.kmitl.findmythings.model.PostModel;
@@ -31,7 +33,7 @@ import finalproject.se.kmitl.findmythings.model.PostModel;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ThingsFindingFragment extends Fragment implements View.OnClickListener{
+public class ThingsFindingFragment extends Fragment implements View.OnClickListener {
     private FloatingActionButton btnNewPost;
     private DatabaseReference mDatabase;
     private FindThingsAdapter findThingsAdapter;
@@ -53,34 +55,32 @@ public class ThingsFindingFragment extends Fragment implements View.OnClickListe
         // Inflate the layout for this fragment\
         View view = inflater.inflate(R.layout.fragment_things_finding, container, false);
         initInstance(view);
-        setupRecyclerView();
         storeFindPost();
+        setupRecyclerView();
         return view;
     }
 
 
-    private void initInstance(View view){
-        Log.i("", "initInstance: ");
+    private void initInstance(View view) {
+
         recyclerView = view.findViewById(R.id.findThingsList);
         btnNewPost = view.findViewById(R.id.fabFinding);
         btnNewPost.setOnClickListener(this);
         mDatabase = FirebaseDatabase.getInstance().getReference().child("find");
         postModel = new PostModel();
-    }
-
-    private void setupRecyclerView() {
-        Log.i("", "setupRecyclerView: ");
-        findThingsAdapter = new FindThingsAdapter(getActivity());
-        findThingsAdapter.setData(postModel.getFindThingsList());
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         layoutManager.setReverseLayout(true);
         layoutManager.setStackFromEnd(true);
         recyclerView.setLayoutManager(layoutManager);
+    }
+
+    private void setupRecyclerView() {
+        findThingsAdapter = new FindThingsAdapter(getActivity());
+        findThingsAdapter.setData(postModel.getFindThingsList());
         recyclerView.setAdapter(findThingsAdapter);
     }
 
-    private void storeFindPost(){
-        Log.i("", "storeFindPost: ");
+    private void storeFindPost() {
 
         mDatabase.addChildEventListener(new ChildEventListener() {
             @Override
@@ -90,7 +90,7 @@ public class ThingsFindingFragment extends Fragment implements View.OnClickListe
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
+                onGetChild(dataSnapshot);
             }
 
             @Override
@@ -120,7 +120,7 @@ public class ThingsFindingFragment extends Fragment implements View.OnClickListe
             postModel.addFindThingsList(findThingsPost);
         }
         int position = findThingsAdapter.getItemCount() - 1;
-        if(position >= 0){
+        if (position >= 0) {
             recyclerView.smoothScrollToPosition(position);
         }
         findThingsAdapter.notifyItemRangeChanged(0, findThingsAdapter.getItemCount());
@@ -131,11 +131,9 @@ public class ThingsFindingFragment extends Fragment implements View.OnClickListe
     public void onClick(View view) {
         if (view.getId() == R.id.fabFinding) {
             Intent intent = new Intent(getActivity(), CreateNewPostActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             intent.putExtra("fragmenttype", "find");
-            startActivity(intent);
-            getActivity().finish();
             getActivity().getFragmentManager().popBackStack();
+            startActivity(intent);
         }
     }
 }

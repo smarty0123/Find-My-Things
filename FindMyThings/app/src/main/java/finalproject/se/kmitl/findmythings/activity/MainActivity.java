@@ -17,7 +17,7 @@ import finalproject.se.kmitl.findmythings.R;
 import finalproject.se.kmitl.findmythings.adapter.SectionPagerAdapter;
 
 
-public class MainActivity extends AppCompatActivity{
+public class MainActivity extends AppCompatActivity {
     private Toolbar mToolbar;
     private FirebaseAuth mAuth;
     private ViewPager mViewPager;
@@ -37,16 +37,13 @@ public class MainActivity extends AppCompatActivity{
         mAuth = FirebaseAuth.getInstance();
 
         mToolbar = findViewById(R.id.main_page_toolbar);
-        setSupportActionBar(mToolbar);
-        getSupportActionBar().setTitle("Find My Things");
+
 
         mViewPager = findViewById(R.id.main_tabPager);
         mSectionPagerAdapter = new SectionPagerAdapter(getSupportFragmentManager());
         mViewPager.setAdapter(mSectionPagerAdapter);
         mTabLayout = findViewById(R.id.main_tabs);
         mTabLayout.setupWithViewPager(mViewPager);
-
-
     }
 
     @Override

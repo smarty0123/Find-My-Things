@@ -10,6 +10,7 @@ public class NewsFeed {
     private String title;
     private Uri image;
 
+
     public String getTitle() {
         return title;
     }

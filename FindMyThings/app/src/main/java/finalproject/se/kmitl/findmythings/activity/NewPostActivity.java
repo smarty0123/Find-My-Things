@@ -18,6 +18,9 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import finalproject.se.kmitl.findmythings.R;
 
 public class NewPostActivity extends AppCompatActivity implements View.OnClickListener {
@@ -31,6 +34,7 @@ public class NewPostActivity extends AppCompatActivity implements View.OnClickLi
     private Uri mImageUri = null;
     private String fragmentType;
     private static final int GALLERY_REQUEST = 1;
+    private String key;
 
 
     @Override
@@ -64,24 +68,46 @@ public class NewPostActivity extends AppCompatActivity implements View.OnClickLi
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     Uri downloadUri = taskSnapshot.getDownloadUrl();
-                    DatabaseReference newPost = mDatabase.push();
-                    newPost.child("title").setValue(getIntent().getStringExtra("title"));
-                    newPost.child("desc").setValue(postDescription);
-                    newPost.child("image").setValue(downloadUri.toString());
-                    /*DatabaseReference newsFeedPost = newsFeedDatabase.push();
-                    newsFeedPost.child("title").setValue(getIntent().getStringExtra("title"));
-                    newsFeedPost.child("desc").setValue(postDescription);
-                    newsFeedPost.child("image").setValue(downloadUri.toString());*/
+                    Map<String, Object> map = new HashMap<>();
+                    key = mDatabase.push().getKey();
+                    map.put(key, "");
+                    mDatabase.updateChildren(map);
+                    DatabaseReference message_key = mDatabase.child(key);
+                    Map<String, Object> map2 = new HashMap<>();
+                    map2.put("title", getIntent().getStringExtra("title"));
+                    map2.put("image", downloadUri.toString());
+                    map2.put("desc", postDescription);
+                    message_key.updateChildren(map2);
+
+                    Map<String, Object> map3 = new HashMap<>();
+                    key = newsFeedDatabase.push().getKey();
+                    map3.put(key, "");
+                    newsFeedDatabase.updateChildren(map3);
+                    DatabaseReference message_key2 = newsFeedDatabase.child(key);
+                    Map<String, Object> map4 = new HashMap<>();
+                    map4.put("title", getIntent().getStringExtra("title"));
+                    map4.put("image", downloadUri.toString());
+                    map4.put("desc", postDescription);
+                    message_key2.updateChildren(map4);
+
                     mProgress.dismiss();
                     Toast.makeText(NewPostActivity.this, "โพสต์แล้วจ้าาา", Toast.LENGTH_SHORT).show();
-                    /*Intent intent = new Intent(NewPostActivity.this, MainActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(intent);
-                    finish();*/
+                    goToMain();
+
                 }
             });
+        }else{
+            mProgress.hide();
         }
     }
+
+    private void goToMain(){
+        Intent intent = new Intent(NewPostActivity.this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        finish();
+    }
+
     //ผลลัพธ์เมื่อเลือกรูปแล้วจะได้ที่อยู่ภาพมา
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

@@ -1,16 +1,19 @@
 package finalproject.se.kmitl.findmythings.fragment;
 
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 
 import com.google.firebase.database.ChildEventListener;
@@ -34,8 +37,7 @@ import finalproject.se.kmitl.findmythings.model.PostModel;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class NewsFeedFragment extends Fragment implements View.OnClickListener {
-    private FloatingActionButton btnNewPost;
+public class NewsFeedFragment extends Fragment {
     private DatabaseReference mDatabase;
     private RecyclerView recyclerView;
     private PostModel postModel;
@@ -44,7 +46,6 @@ public class NewsFeedFragment extends Fragment implements View.OnClickListener {
     private String title;
     private NewsFeedAdapter newsFeedAdapter;
     private NewsFeed newsFeed;
-    private ProgressDialog mProgress;
 
     public NewsFeedFragment() {
         // Required empty public constructor
@@ -56,8 +57,8 @@ public class NewsFeedFragment extends Fragment implements View.OnClickListener {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_news_feed, container, false);
         initInstance(view);
-        setupRecyclerView();
         storeNewsFeed();
+        setupRecyclerView();
         return view;
     }
 
@@ -65,16 +66,17 @@ public class NewsFeedFragment extends Fragment implements View.OnClickListener {
         recyclerView = view.findViewById(R.id.newsFeedList);
         mDatabase = FirebaseDatabase.getInstance().getReference().child("newsfeed");
         postModel = new PostModel();
-        mProgress = new ProgressDialog(getActivity());
-    }
 
-    private void setupRecyclerView() {
-        newsFeedAdapter = new NewsFeedAdapter(getActivity());
-        newsFeedAdapter.setData(postModel.getNewsFeedsList());
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         layoutManager.setReverseLayout(true);
         layoutManager.setStackFromEnd(true);
         recyclerView.setLayoutManager(layoutManager);
+
+    }
+
+    private void setupRecyclerView() {
+        newsFeedAdapter = new NewsFeedAdapter(getActivity().getApplicationContext());
+        newsFeedAdapter.setData(postModel.getNewsFeedsList());
         recyclerView.setAdapter(newsFeedAdapter);
     }
 
@@ -127,13 +129,5 @@ public class NewsFeedFragment extends Fragment implements View.OnClickListener {
     }
 
 
-    @Override
-    public void onClick(View view) {
-        if (view.getId() == R.id.fabNewsFeed) {
-            Intent intent = new Intent(getActivity(), CreateNewPostActivity.class);
-            intent.putExtra("type", "newsfeed");
-            startActivity(intent);
-        }
-    }
 
 }
