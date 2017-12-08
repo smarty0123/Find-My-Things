@@ -77,6 +77,7 @@ public class NewPostActivity extends AppCompatActivity implements View.OnClickLi
                     map2.put("title", getIntent().getStringExtra("title"));
                     map2.put("image", downloadUri.toString());
                     map2.put("desc", postDescription);
+                    map2.put("date", getIntent().getStringExtra("date"));
                     message_key.updateChildren(map2);
 
                     Map<String, Object> map3 = new HashMap<>();
@@ -88,6 +89,7 @@ public class NewPostActivity extends AppCompatActivity implements View.OnClickLi
                     map4.put("title", getIntent().getStringExtra("title"));
                     map4.put("image", downloadUri.toString());
                     map4.put("desc", postDescription);
+                    map4.put("date", getIntent().getStringExtra("date"));
                     message_key2.updateChildren(map4);
 
                     mProgress.dismiss();

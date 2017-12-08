@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent">
+
+    <group android:checkableBehavior="single">
+        <item android:id="@+id/myPost" android:icon="@mipmap/ic_forum_black_24dp"
+            android:title="โพสต์ของฉัน" />
+    </group>
+
+    <item android:title="ผู้ใช้งาน">
+        <menu>
+            <item android:id="@+id/accountSetting" android:icon="@mipmap/ic_settings_black_24dp"
+                android:title="ตั้งค่าผู้ใช้งาน" />
+            <item android:id="@+id/logout" android:icon="@mipmap/ic_exit_to_app_black_24dp"
+                android:title="ออกจากระบบ" />
+        </menu>
+    </item>
+
+</menu>

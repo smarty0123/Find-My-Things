@@ -5,24 +5,6 @@
     android:layout_height="wrap_content"
     android:background="@android:color/holo_orange_light">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/titleName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Find My Things"
-            android:textSize="20dp"
-            android:textStyle="bold" />
-
-        <ImageView
-            android:id="@+id/searchImg"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingLeft="120dp"
-            android:src="@mipmap/ic_search_white_24dp" />
-    </LinearLayout>
 
 </android.support.v7.widget.Toolbar>

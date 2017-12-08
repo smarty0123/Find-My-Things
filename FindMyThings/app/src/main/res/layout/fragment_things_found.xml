@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     tools:context="finalproject.se.kmitl.findmythings.fragment.ThingsFoundFragment">
 
-    <!-- TODO: Update blank fragment layout -->
+    <!-- TODO: Update blank fragmnav_header_mainyout -->
     <android.support.v7.widget.RecyclerView
         android:id="@+id/foundThingsList"
         android:layout_width="match_parent"

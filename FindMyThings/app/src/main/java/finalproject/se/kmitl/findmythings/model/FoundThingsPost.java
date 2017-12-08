@@ -8,6 +8,15 @@ public class FoundThingsPost {
     private String title;
     private String desc;
     private String image;
+    private String key;
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
 
     public String getTitle() {
         return title;

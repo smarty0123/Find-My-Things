@@ -52,7 +52,7 @@ public class ThingsFindingFragment extends Fragment implements View.OnClickListe
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment\
+        // Inflate the nav_header_main for this fragment\
         View view = inflater.inflate(R.layout.fragment_things_finding, container, false);
         initInstance(view);
         storeFindPost();
@@ -112,11 +112,14 @@ public class ThingsFindingFragment extends Fragment implements View.OnClickListe
     private void onGetChild(DataSnapshot dataSnapshot) {
         Iterator i = dataSnapshot.getChildren().iterator();
         while (i.hasNext()) {
+            String date = (String) ((DataSnapshot) i.next()).getValue();
             desc = (String) ((DataSnapshot) i.next()).getValue();
             image = (String) ((DataSnapshot) i.next()).getValue();
             title = (String) ((DataSnapshot) i.next()).getValue();
+            String key = dataSnapshot.getKey();
             findThingsPost = new FindThingsPost();
             findThingsPost.setTitle(title);
+            findThingsPost.setKey(key);
             postModel.addFindThingsList(findThingsPost);
         }
         int position = findThingsAdapter.getItemCount() - 1;

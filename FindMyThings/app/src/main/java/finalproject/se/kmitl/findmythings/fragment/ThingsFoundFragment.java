@@ -50,7 +50,7 @@ public class ThingsFoundFragment extends Fragment implements View.OnClickListene
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment\
+        // Inflate the nav_header_main for this fragment\
         View view = inflater.inflate(R.layout.fragment_things_found, container, false);
 
         initInstance(view);
@@ -110,11 +110,14 @@ public class ThingsFoundFragment extends Fragment implements View.OnClickListene
     private void onGetChild(DataSnapshot dataSnapshot) {
         Iterator i = dataSnapshot.getChildren().iterator();
         while (i.hasNext()) {
+            String date = (String) ((DataSnapshot) i.next()).getValue();
             desc = (String) ((DataSnapshot) i.next()).getValue();
             image = (String) ((DataSnapshot) i.next()).getValue();
             title = (String) ((DataSnapshot) i.next()).getValue();
+            String key = dataSnapshot.getKey();
             foundThingsPost = new FoundThingsPost();
             foundThingsPost.setTitle(title);
+            foundThingsPost.setKey(key);
             postModel.addFoundThingsList(foundThingsPost);
         }
         int position = foundThingsAdapter.getItemCount() - 1;

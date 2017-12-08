@@ -1,6 +1,7 @@
 package finalproject.se.kmitl.findmythings.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import finalproject.se.kmitl.findmythings.R;
+import finalproject.se.kmitl.findmythings.activity.PostDescription;
 import finalproject.se.kmitl.findmythings.adapter.holder.FindThingsHolder;
 import finalproject.se.kmitl.findmythings.model.FindThingsPost;
 
@@ -40,8 +42,20 @@ public class FindThingsAdapter extends RecyclerView.Adapter<FindThingsHolder>{
     }
 
     @Override
-    public void onBindViewHolder(FindThingsHolder holder, int position) {
+    public void onBindViewHolder(FindThingsHolder holder, final int position) {
         holder.postTitle.setText(data.get(position).getTitle());
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, PostDescription.class);
+                intent.putExtra("from", "find");
+                intent.putExtra("key", data.get(position).getKey());
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                context.startActivity(intent);
+
+            }
+        });
     }
 
     @Override
