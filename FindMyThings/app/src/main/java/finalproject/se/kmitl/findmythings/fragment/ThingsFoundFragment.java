@@ -113,6 +113,7 @@ public class ThingsFoundFragment extends Fragment implements View.OnClickListene
             String date = (String) ((DataSnapshot) i.next()).getValue();
             desc = (String) ((DataSnapshot) i.next()).getValue();
             image = (String) ((DataSnapshot) i.next()).getValue();
+            String userKey = (String) ((DataSnapshot) i.next()).getValue();
             title = (String) ((DataSnapshot) i.next()).getValue();
             String key = dataSnapshot.getKey();
             foundThingsPost = new FoundThingsPost();

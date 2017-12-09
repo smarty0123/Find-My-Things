@@ -42,11 +42,11 @@ public class SectionPagerAdapter extends FragmentPagerAdapter{
     public CharSequence getPageTitle(int position){
         switch (position){
             case 0:
-                return "News Feed";
+                return "หน้าหลัก";
             case 1:
-                return "Finding";
+                return "หาสิ่งของ";
             case 2:
-                return "Found Things";
+                return "เจอสิ่งของ";
             default:
                 return null;
         }

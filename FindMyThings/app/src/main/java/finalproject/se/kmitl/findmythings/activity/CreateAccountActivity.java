@@ -16,6 +16,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import finalproject.se.kmitl.findmythings.R;
 
@@ -28,6 +33,7 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
     private Button btnCreateAccount;
 
     private FirebaseAuth mAuth;
+    private DatabaseReference userProfileDatabase;
     private ProgressDialog mRegProgress;
 
     @Override
@@ -36,6 +42,7 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
         setContentView(R.layout.activity_create_account);
         initInstance();
         mAuth = FirebaseAuth.getInstance();
+        userProfileDatabase = FirebaseDatabase.getInstance().getReference().child("user_profile");
     }
 
     private void initInstance() {
@@ -52,13 +59,22 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
 
     }
 
-    private void registerUser(String email, String password, String confirmPassword, String displayName, String phoneNumber) {
+    private void registerUser(final String email, String password, String confirmPassword, final String displayName, final String phoneNumber) {
         if (password.equals(confirmPassword)) {
             mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if (task.isSuccessful()) {
-                        
+                        Map<String, Object> map = new HashMap<>();
+                        String key = FirebaseAuth.getInstance().getUid();
+                        map.put(key, "");
+                        userProfileDatabase.updateChildren(map);
+                        DatabaseReference message_key2 = userProfileDatabase.child(key);
+                        Map<String, Object> map2 = new HashMap<>();
+                        map2.put("email", email);
+                        map2.put("phone", phoneNumber);
+                        map2.put("displayname", displayName);
+                        message_key2.updateChildren(map2);
                         mRegProgress.dismiss();
                         Intent intent = new Intent(CreateAccountActivity.this, MainActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

@@ -114,6 +114,7 @@ public class NewsFeedFragment extends Fragment {
             String date = (String) ((DataSnapshot) i.next()).getValue();
             desc = (String) ((DataSnapshot) i.next()).getValue();
             image = (String) ((DataSnapshot) i.next()).getValue();
+            String userKey = (String) ((DataSnapshot) i.next()).getValue();
             title = (String) ((DataSnapshot) i.next()).getValue();
             String key = dataSnapshot.getKey();
             newsFeed = new NewsFeed();

@@ -53,7 +53,6 @@ public class FindThingsAdapter extends RecyclerView.Adapter<FindThingsHolder>{
                 intent.putExtra("key", data.get(position).getKey());
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
-
             }
         });
     }

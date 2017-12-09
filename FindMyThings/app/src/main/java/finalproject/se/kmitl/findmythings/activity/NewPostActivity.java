@@ -12,6 +12,7 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -78,10 +79,10 @@ public class NewPostActivity extends AppCompatActivity implements View.OnClickLi
                     map2.put("image", downloadUri.toString());
                     map2.put("desc", postDescription);
                     map2.put("date", getIntent().getStringExtra("date"));
+                    map2.put("key", FirebaseAuth.getInstance().getUid());
                     message_key.updateChildren(map2);
 
                     Map<String, Object> map3 = new HashMap<>();
-                    key = newsFeedDatabase.push().getKey();
                     map3.put(key, "");
                     newsFeedDatabase.updateChildren(map3);
                     DatabaseReference message_key2 = newsFeedDatabase.child(key);
@@ -90,6 +91,7 @@ public class NewPostActivity extends AppCompatActivity implements View.OnClickLi
                     map4.put("image", downloadUri.toString());
                     map4.put("desc", postDescription);
                     map4.put("date", getIntent().getStringExtra("date"));
+                    map4.put("key", FirebaseAuth.getInstance().getUid());
                     message_key2.updateChildren(map4);
 
                     mProgress.dismiss();
@@ -110,7 +112,6 @@ public class NewPostActivity extends AppCompatActivity implements View.OnClickLi
         finish();
     }
 
-    //ผลลัพธ์เมื่อเลือกรูปแล้วจะได้ที่อยู่ภาพมา
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

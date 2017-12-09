@@ -3,10 +3,14 @@
     android:layout_height="match_parent"
     android:layout_width="match_parent">
 
-    <group android:checkableBehavior="single">
+    <item android:title="โพสต์">
+        <menu>
+        <item android:id="@+id/allPost" android:icon="@mipmap/ic_forum_black_24dp"
+            android:title="รวมโพสต์" />
         <item android:id="@+id/myPost" android:icon="@mipmap/ic_forum_black_24dp"
             android:title="โพสต์ของฉัน" />
-    </group>
+        </menu>
+    </item>
 
     <item android:title="ผู้ใช้งาน">
         <menu>
