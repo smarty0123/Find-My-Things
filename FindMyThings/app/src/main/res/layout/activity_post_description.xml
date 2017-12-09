@@ -90,8 +90,8 @@
                         android:id="@+id/btnDeletePost"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="50dp"
-                        android:text="Delete Post"
+                        android:layout_marginLeft="60dp"
+                        android:text="ลบโพสต์"
                         android:visibility="invisible"
                         android:textSize="18sp" />
 
@@ -99,8 +99,8 @@
                         android:id="@+id/btnEditPost"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="20dp"
-                        android:text="Edit Post"
+                        android:layout_marginLeft="30dp"
+                        android:text="แก้ไขโพสต์"
                         android:visibility="invisible"
                         android:textSize="18sp" />
                 </LinearLayout>

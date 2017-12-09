@@ -1,11 +1,14 @@
 package finalproject.se.kmitl.findmythings.activity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -25,7 +28,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import finalproject.se.kmitl.findmythings.R;
 
-public class PostDescription extends AppCompatActivity {
+public class PostDescription extends AppCompatActivity{
     private Toolbar mToolbar = null;
     private NavigationView navigationView = null;
     private DrawerLayout drawerLayout;
@@ -47,7 +50,7 @@ public class PostDescription extends AppCompatActivity {
     private Button btnEditPost;
     @Override
 
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post_description);
         initInstance();
@@ -130,6 +133,34 @@ public class PostDescription extends AppCompatActivity {
             }
         });
 
+
+        btnDeletePost.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder builder1 = new AlertDialog.Builder(PostDescription.this);
+                builder1.setMessage("คุณต้องการลบโพสต์ใช่หรือไม่");
+                builder1.setCancelable(true);
+
+                builder1.setPositiveButton(
+                        "ใช่",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+
+                builder1.setNegativeButton(
+                        "ไม่ใช่",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+
+                AlertDialog alert11 = builder1.create();
+                alert11.show();
+            }
+        });
     }
 
     private void setNavigation() {
@@ -177,4 +208,6 @@ public class PostDescription extends AppCompatActivity {
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
     }
+
+
 }
