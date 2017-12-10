@@ -49,6 +49,11 @@ public class PostDescription extends AppCompatActivity implements View.OnClickLi
     private String keyUser;
     private Button btnDeletePost;
     private Button btnEditPost;
+    private String phoneNumber;
+    private String title;
+    private String image;
+    private String description;
+    private String date;
 
     @Override
 
@@ -69,7 +74,7 @@ public class PostDescription extends AppCompatActivity implements View.OnClickLi
         userProfileDB.child(FirebaseAuth.getInstance().getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                String phoneNumber = (String) dataSnapshot.child("phone").getValue();
+                phoneNumber = (String) dataSnapshot.child("phone").getValue();
                 tvContact.setText(phoneNumber);
             }
 
@@ -116,10 +121,11 @@ public class PostDescription extends AppCompatActivity implements View.OnClickLi
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
-                    String title = (String) dataSnapshot.child("title").getValue();
-                    String image = (String) dataSnapshot.child("image").getValue();
-                    String description = (String) dataSnapshot.child("desc").getValue();
+                    title = (String) dataSnapshot.child("title").getValue();
+                    image = (String) dataSnapshot.child("image").getValue();
+                    description = (String) dataSnapshot.child("desc").getValue();
                     keyUser = (String) dataSnapshot.child("key").getValue();
+                    date = (String) dataSnapshot.child("date").getValue();
                     Glide.with(PostDescription.this).load(Uri.parse(image)).into(postImage);
                     tvTitle.setText(title);
                     tvDesription.setText(description);
@@ -128,7 +134,9 @@ public class PostDescription extends AppCompatActivity implements View.OnClickLi
                         btnEditPost.setVisibility(View.VISIBLE);
                     }
                 }else{
-                    startActivity(new Intent(PostDescription.this, MainActivity.class));
+                    Intent intent = new Intent(PostDescription.this, MainActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
                     finish();
                 }
 
@@ -221,7 +229,15 @@ public class PostDescription extends AppCompatActivity implements View.OnClickLi
             AlertDialog alert11 = builder1.create();
             alert11.show();
         } else if (view.getId() == R.id.btnEditPost) {
-            //Do something
+            Intent intent = new Intent(PostDescription.this, EditPostActivity.class);
+            intent.putExtra("key", key);
+            intent.putExtra("title", title);
+            intent.putExtra("desc", description);
+            intent.putExtra("image", image);
+            intent.putExtra("phone", phoneNumber);
+            intent.putExtra("date", date);
+            intent.putExtra("fragmenttype", getIntent().getStringExtra("from"));
+            startActivity(intent);
         }
     }
 }
