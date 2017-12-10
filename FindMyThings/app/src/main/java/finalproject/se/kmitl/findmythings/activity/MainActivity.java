@@ -112,6 +112,10 @@ public class MainActivity extends AppCompatActivity {
                         drawerLayout.closeDrawers();
                         break;
                     case R.id.myPost:
+                        Intent myPostIntent = new Intent(MainActivity.this, MyPostActivity.class);
+                        myPostIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(myPostIntent);
+                        finish();
                         item.setChecked(true);
                         break;
                     case R.id.logout:

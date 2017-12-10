@@ -23,8 +23,10 @@
         <activity android:name=".activity.CreateNewPostActivity" />
         <activity android:name=".activity.NewPostActivity" />
         <activity android:name=".activity.PostDescription" />
-        <activity android:name=".activity.EditPostActivity"
-            android:windowSoftInputMode="stateHidden"></activity>
+        <activity
+            android:name=".activity.EditPostActivity"
+            android:windowSoftInputMode="stateHidden" />
+        <activity android:name=".activity.MyPostActivity"></activity>
     </application>
 
 </manifest>

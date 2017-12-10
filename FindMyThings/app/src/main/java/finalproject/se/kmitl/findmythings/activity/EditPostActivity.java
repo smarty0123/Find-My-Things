@@ -10,6 +10,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -94,6 +95,10 @@ public class EditPostActivity extends AppCompatActivity implements View.OnClickL
                         drawerLayout.closeDrawers();
                         break;
                     case R.id.myPost:
+                        Intent myPostIntent = new Intent(EditPostActivity.this, MyPostActivity.class);
+                        myPostIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(myPostIntent);
+                        finish();
                         item.setChecked(true);
                         break;
                     case R.id.logout:
@@ -208,8 +213,6 @@ public class EditPostActivity extends AppCompatActivity implements View.OnClickL
             });
         }
 
-
-
     }
 
     private void goToPostDescription() {
@@ -224,7 +227,6 @@ public class EditPostActivity extends AppCompatActivity implements View.OnClickL
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
         if (requestCode == GALLERY_REQUEST && resultCode == RESULT_OK) {
             mImageUri = data.getData();
             postImage.setImageURI(mImageUri);

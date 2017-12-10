@@ -101,8 +101,12 @@ public class PostDescription extends AppCompatActivity implements View.OnClickLi
                         drawerLayout.closeDrawers();
                         break;
                     case R.id.myPost:
-                        //item.setChecked(true);
-                        //break;
+                        Intent myPostIntent = new Intent(PostDescription.this, MyPostActivity.class);
+                        myPostIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(myPostIntent);
+                        finish();
+                        item.setChecked(true);
+                        break;
                     case R.id.logout:
                         FirebaseAuth.getInstance().signOut();
                         startActivity(new Intent(PostDescription.this, LoginActivity.class));
