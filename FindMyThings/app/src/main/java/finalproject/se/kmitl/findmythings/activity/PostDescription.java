@@ -107,6 +107,13 @@ public class PostDescription extends AppCompatActivity implements View.OnClickLi
                         finish();
                         item.setChecked(true);
                         break;
+                    case R.id.accountSetting:
+                        Intent settingIntent = new Intent(PostDescription.this, EditAccountActivity.class);
+                        settingIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(settingIntent);
+                        finish();
+                        item.setChecked(true);
+                        break;
                     case R.id.logout:
                         FirebaseAuth.getInstance().signOut();
                         startActivity(new Intent(PostDescription.this, LoginActivity.class));

@@ -26,7 +26,11 @@
         <activity
             android:name=".activity.EditPostActivity"
             android:windowSoftInputMode="stateHidden" />
-        <activity android:name=".activity.MyPostActivity"></activity>
+        <activity android:name=".activity.MyPostActivity" />
+        <activity
+            android:name=".activity.EditAccountActivity"
+            android:windowSoftInputMode="stateHidden" />
+
     </application>
 
 </manifest>

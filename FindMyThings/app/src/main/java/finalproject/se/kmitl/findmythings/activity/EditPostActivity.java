@@ -101,6 +101,13 @@ public class EditPostActivity extends AppCompatActivity implements View.OnClickL
                         finish();
                         item.setChecked(true);
                         break;
+                    case R.id.accountSetting:
+                        Intent settingIntent = new Intent(EditPostActivity.this, EditAccountActivity.class);
+                        settingIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(settingIntent);
+                        finish();
+                        item.setChecked(true);
+                        break;
                     case R.id.logout:
                         FirebaseAuth.getInstance().signOut();
                         startActivity(new Intent(EditPostActivity.this, LoginActivity.class));

@@ -1,6 +1,5 @@
 package finalproject.se.kmitl.findmythings.activity;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.NonNull;
@@ -14,9 +13,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
+
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -27,7 +24,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.StorageReference;
+
 
 import java.util.Iterator;
 
@@ -47,13 +44,8 @@ public class MyPostActivity extends AppCompatActivity {
 
     private DatabaseReference child;
 
-    private ProgressDialog mProgress;
-
-    private StorageReference mStorage;
-    private String key;
-    private String fragmentType;
     private Query mDatabase;
-    private Uri downloadUri;
+
     private RecyclerView recyclerView;
     private PostModel postModel;
 
@@ -89,7 +81,6 @@ public class MyPostActivity extends AppCompatActivity {
         View headerView = navigationView.getHeaderView(0);
         tvDisplayName = headerView.findViewById(R.id.displayName);
         tvEmail = headerView.findViewById(R.id.email);
-
         if (FirebaseAuth.getInstance().getUid() != null) {
             child = FirebaseDatabase.getInstance().getReference().child("user_profile");
             child.child(FirebaseAuth.getInstance().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -141,6 +132,13 @@ public class MyPostActivity extends AppCompatActivity {
                         Intent myPostIntent = new Intent(MyPostActivity.this, MyPostActivity.class);
                         myPostIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(myPostIntent);
+                        finish();
+                        item.setChecked(true);
+                        break;
+                    case R.id.accountSetting:
+                        Intent settingIntent = new Intent(MyPostActivity.this, EditAccountActivity.class);
+                        settingIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(settingIntent);
                         finish();
                         item.setChecked(true);
                         break;
