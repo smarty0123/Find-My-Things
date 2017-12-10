@@ -1,6 +1,8 @@
 package finalproject.se.kmitl.findmythings.activity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
@@ -10,18 +12,26 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import finalproject.se.kmitl.findmythings.R;
 
-public class EditAccountActivity extends AppCompatActivity {
+public class EditAccountActivity extends AppCompatActivity implements View.OnClickListener {
     private Toolbar mToolbar = null;
     private NavigationView navigationView = null;
     private DrawerLayout drawerLayout;
@@ -30,6 +40,19 @@ public class EditAccountActivity extends AppCompatActivity {
     private TextView tvEmail;
 
     private DatabaseReference child;
+    private EditText etDisplayName;
+    private EditText etPhoneNumber;
+    private Button btnConfirm;
+    private ImageButton mSelectImage;
+
+    private static final int GALLERY_REQUEST = 1;
+    private Uri mImageUri = null;
+    private ProgressDialog mProgress;
+    private StorageReference mStorage;
+    private Uri downloadUri;
+    private String key;
+
+    private DatabaseReference mDatabase;
 
 
     @Override
@@ -45,6 +68,21 @@ public class EditAccountActivity extends AppCompatActivity {
         mToolbar = findViewById(R.id.main_page_toolbar);
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
+
+        etDisplayName = findViewById(R.id.etDisplayName);
+        etPhoneNumber = findViewById(R.id.etPhoneNumber);
+
+        mSelectImage = findViewById(R.id.selectImage);
+        mSelectImage.setOnClickListener(this);
+
+        btnConfirm = findViewById(R.id.btnConfirm);
+        btnConfirm.setOnClickListener(this);
+
+        mProgress = new ProgressDialog(this);
+
+        mStorage = FirebaseStorage.getInstance().getReference();
+
+        mDatabase = FirebaseDatabase.getInstance().getReference().child("user_profile");
     }
 
     private void setAppBar() {
@@ -123,6 +161,55 @@ public class EditAccountActivity extends AppCompatActivity {
 
                 }
             });
+        }
+    }
+
+    private void startUpdate() {
+        mProgress.setMessage("กำลังแก้ไข...");
+        mProgress.show();
+        if(mImageUri.toString().isEmpty()){
+            goToMain();
+        }else{
+            StorageReference filePath = mStorage.child("userpic").child(mImageUri.getLastPathSegment());
+            filePath.putFile(mImageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    downloadUri = taskSnapshot.getDownloadUrl();
+                    key = FirebaseAuth.getInstance().getUid();
+                    mDatabase.child(key).child("displayname").setValue(etDisplayName.getText().toString().trim());
+                    mDatabase.child(key).child("phone").setValue(etPhoneNumber.getText().toString().trim());
+                    mProgress.dismiss();
+                    Toast.makeText(EditAccountActivity.this, "แก้ไขเรียบร้อย", Toast.LENGTH_SHORT).show();
+                    goToMain();
+                }
+            });
+        }
+    }
+
+    private void goToMain() {
+        Intent intent = new Intent(EditAccountActivity.this, MainActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == GALLERY_REQUEST && resultCode == RESULT_OK) {
+            mImageUri = data.getData();
+            mSelectImage.setImageURI(mImageUri);
+        }
+    }
+
+
+    @Override
+    public void onClick(View view) {
+        if (view.getId() == R.id.btnConfirm) {
+            startUpdate();
+        }else if(view.getId() == R.id.selectImage){
+            Intent galleryIntent = new Intent(Intent.ACTION_GET_CONTENT);
+            galleryIntent.setType("image/*");
+            startActivityForResult(galleryIntent, GALLERY_REQUEST);
         }
     }
 
