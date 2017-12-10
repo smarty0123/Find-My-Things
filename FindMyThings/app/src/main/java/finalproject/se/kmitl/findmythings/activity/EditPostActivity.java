@@ -14,7 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
+
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,6 +22,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -31,8 +32,6 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-import java.util.HashMap;
-import java.util.Map;
 
 import finalproject.se.kmitl.findmythings.R;
 
@@ -61,6 +60,8 @@ public class EditPostActivity extends AppCompatActivity implements View.OnClickL
     private StorageReference mStorage;
     private String key;
     private String fragmentType;
+    private DatabaseReference mDatabase;
+    private Uri downloadUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +71,7 @@ public class EditPostActivity extends AppCompatActivity implements View.OnClickL
         setNavigation();
         setAppBar();
         initInformation();
+
     }
 
 
@@ -126,6 +128,8 @@ public class EditPostActivity extends AppCompatActivity implements View.OnClickL
         btnConfirm.setOnClickListener(this);
 
         mStorage = FirebaseStorage.getInstance().getReference();
+
+        mDatabase = FirebaseDatabase.getInstance().getReference().child(fragmentType);
 
     }
 
@@ -185,48 +189,34 @@ public class EditPostActivity extends AppCompatActivity implements View.OnClickL
     private void startUpdate() {
         mProgress.setMessage("กำลังแก้ไข...");
         mProgress.show();
-        final StorageReference filePath = mStorage.child(fragmentType).child(mImageUri.getLastPathSegment());
-        filePath.putFile(mImageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                Uri downloadUri = taskSnapshot.getDownloadUrl();
-                Map<String, Object> map = new HashMap<>();
-                key = getIntent().getStringExtra("key");
-                map.put(key, "");
-                FirebaseDatabase.getInstance().getReference().child(fragmentType).updateChildren(map);
-                DatabaseReference message_key = FirebaseDatabase.getInstance().getReference().child(fragmentType).child(key);
-                Map<String, Object> map2 = new HashMap<>();
-                map2.put("title", etTitle.getText().toString().trim());
-                map2.put("image", downloadUri.toString());
-                map2.put("desc", etDescription.getText().toString().trim());
-                map2.put("date", getIntent().getStringExtra("date"));
-                map2.put("key", FirebaseAuth.getInstance().getUid());
-                message_key.updateChildren(map2);
+        if(mImageUri.toString().isEmpty()){
+            goToPostDescription();
+        }else{
+            StorageReference filePath = mStorage.child(fragmentType).child(mImageUri.getLastPathSegment());
+            filePath.putFile(mImageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    downloadUri = taskSnapshot.getDownloadUrl();
+                    key = getIntent().getStringExtra("key");
+                    mDatabase.child(key).child("title").setValue(etTitle.getText().toString().trim());
+                    mDatabase.child(key).child("image").setValue(downloadUri.toString());
+                    mDatabase.child(key).child("desc").setValue(etDescription.getText().toString().trim());
+                    mProgress.dismiss();
+                    Toast.makeText(EditPostActivity.this, "แก้ไขเรียบร้อย", Toast.LENGTH_SHORT).show();
+                    goToPostDescription();
+                }
+            });
+        }
 
-                Map<String, Object> map3 = new HashMap<>();
-                map3.put(key, "");
-                FirebaseDatabase.getInstance().getReference().child("newsfeed").updateChildren(map3);
-                DatabaseReference message_key2 = FirebaseDatabase.getInstance().getReference().child("newsfeed").child(key);
-                Map<String, Object> map4 = new HashMap<>();
-                map4.put("title", etTitle.getText().toString().trim());
-                map4.put("image", downloadUri.toString());
-                map4.put("desc", etDescription.getText().toString().trim());
-                map4.put("date", getIntent().getStringExtra("date"));
-                map4.put("key", FirebaseAuth.getInstance().getUid());
-                message_key2.updateChildren(map4);
 
-                mProgress.dismiss();
-                Toast.makeText(EditPostActivity.this, "แก้ไขเรียบร้อย", Toast.LENGTH_SHORT).show();
-                goToPostDescription();
-
-            }
-        });
 
     }
 
     private void goToPostDescription() {
         Intent intent = new Intent(EditPostActivity.this, PostDescription.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        intent.putExtra("from", "newsfeed");
+        intent.putExtra("image", mImageUri.toString());
+        intent.putExtra("key", getIntent().getStringExtra("key"));
         startActivity(intent);
         finish();
     }
