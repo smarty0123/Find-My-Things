@@ -28,6 +28,28 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/userProfilePic"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginTop="16dp" />
+
+                    <TextView
+                        android:id="@+id/userDisplayName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="8dp"
+                        android:gravity="center"
+                        android:textStyle="bold"
+                        android:textSize="20dp"
+                        android:text="name" />
+                </LinearLayout>
+
                 <TextView
                     android:id="@+id/tvTitle"
                     android:layout_width="match_parent"
@@ -92,8 +114,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="60dp"
                         android:text="ลบโพสต์"
-                        android:visibility="invisible"
-                        android:textSize="18sp" />
+                        android:textSize="18sp"
+                        android:visibility="invisible" />
 
                     <Button
                         android:id="@+id/btnEditPost"
@@ -101,8 +123,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="30dp"
                         android:text="แก้ไขโพสต์"
-                        android:visibility="invisible"
-                        android:textSize="18sp" />
+                        android:textSize="18sp"
+                        android:visibility="invisible" />
                 </LinearLayout>
 
             </LinearLayout>

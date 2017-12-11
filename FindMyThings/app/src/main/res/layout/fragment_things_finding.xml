@@ -14,9 +14,9 @@
     </android.support.v7.widget.RecyclerView>
     <com.melnykov.fab.FloatingActionButton
         android:id="@+id/fabFinding"
-        fab:fab_colorNormal="@color/colorAccent"
-        fab:fab_colorPressed="@android:color/holo_red_light"
-        fab:fab_colorRipple="@android:color/holo_red_light"
+        fab:fab_colorNormal="@android:color/holo_orange_light"
+        fab:fab_colorPressed="@android:color/holo_orange_dark"
+        fab:fab_colorRipple="@android:color/holo_orange_dark"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|right"

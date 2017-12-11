@@ -49,14 +49,13 @@ public class NewsFeedAdapter extends RecyclerView.Adapter<NewsFeedHolder> {
     public void onBindViewHolder(NewsFeedHolder holder, final int position) {
         Glide.with(context).load(data.get(position).getImage()).into(holder.imageView);
         holder.postTitle.setText(data.get(position).getTitle());
-
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, PostDescription.class);
                 intent.putExtra("from", "newsfeed");
                 intent.putExtra("key", data.get(position).getKey());
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
 
             }

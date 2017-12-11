@@ -53,7 +53,7 @@ public class FoundThingsAdapter extends RecyclerView.Adapter<FoundThingsHolder> 
                 Intent intent = new Intent(context, PostDescription.class);
                 intent.putExtra("from", "found");
                 intent.putExtra("key", data.get(position).getKey());
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
 
             }

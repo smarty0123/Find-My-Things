@@ -49,7 +49,6 @@ public class EditPostActivity extends AppCompatActivity implements View.OnClickL
     private EditText etTitle;
     private EditText etDescription;
     private ImageView postImage;
-    private EditText tvContact;
 
     private static final int GALLERY_REQUEST = 1;
     private Uri mImageUri = null;
@@ -83,7 +82,6 @@ public class EditPostActivity extends AppCompatActivity implements View.OnClickL
         etTitle = findViewById(R.id.etTitle);
         etDescription = findViewById(R.id.etDescription);
         postImage = findViewById(R.id.postImage);
-        tvContact = findViewById(R.id.tvContact);
         btnConfirm = findViewById(R.id.btnConfirm);
 
         mProgress = new ProgressDialog(this);
@@ -95,9 +93,10 @@ public class EditPostActivity extends AppCompatActivity implements View.OnClickL
 
         mStorage = FirebaseStorage.getInstance().getReference();
 
-        mDatabase = FirebaseDatabase.getInstance().getReference().child(fragmentType);
+        mDatabase = FirebaseDatabase.getInstance().getReference();
 
     }
+
     private void setNavigation() {
         View headerView = navigationView.getHeaderView(0);
         tvDisplayName = headerView.findViewById(R.id.displayName);
@@ -185,19 +184,6 @@ public class EditPostActivity extends AppCompatActivity implements View.OnClickL
         etTitle.setText(getIntent().getStringExtra("title"));
         etDescription.setText(getIntent().getStringExtra("desc"));
         Glide.with(this).load(Uri.parse(getIntent().getStringExtra("image"))).into(postImage);
-        tvContact.setText(getIntent().getStringExtra("phone"));
-    }
-
-
-    @Override
-    public void onClick(View view) {
-        if (view.getId() == R.id.postImage) {
-            Intent galleryIntent = new Intent(Intent.ACTION_GET_CONTENT);
-            galleryIntent.setType("image/*");
-            startActivityForResult(galleryIntent, GALLERY_REQUEST);
-        } else if (view.getId() == R.id.btnConfirm) {
-            startUpdate();
-        }
     }
 
     private void startUpdate() {
@@ -210,9 +196,9 @@ public class EditPostActivity extends AppCompatActivity implements View.OnClickL
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     downloadUri = taskSnapshot.getDownloadUrl();
                     key = getIntent().getStringExtra("key");
-                    mDatabase.child(key).child("title").setValue(etTitle.getText().toString().trim());
-                    mDatabase.child(key).child("image").setValue(downloadUri.toString());
-                    mDatabase.child(key).child("desc").setValue(etDescription.getText().toString().trim());
+                    updateFindDB(true);
+                    updateFoundDB(true);
+                    updateNewsFeedDB(true);
                     mProgress.dismiss();
                     Toast.makeText(EditPostActivity.this, "แก้ไขเรียบร้อย", Toast.LENGTH_SHORT).show();
                     goToPostDescription();
@@ -222,8 +208,11 @@ public class EditPostActivity extends AppCompatActivity implements View.OnClickL
             mProgress.setMessage("กำลังแก้ไข...");
             mProgress.show();
             key = getIntent().getStringExtra("key");
-            mDatabase.child(key).child("title").setValue(etTitle.getText().toString().trim());
-            mDatabase.child(key).child("desc").setValue(etDescription.getText().toString().trim());
+            updateFindDB(false);
+            updateFoundDB(false);
+            updateNewsFeedDB(false);
+            mDatabase.child(fragmentType).child(key).child("title").setValue(etTitle.getText().toString().trim());
+            mDatabase.child(fragmentType).child(key).child("desc").setValue(etDescription.getText().toString().trim());
             mProgress.dismiss();
             Toast.makeText(EditPostActivity.this, "แก้ไขเรียบร้อย", Toast.LENGTH_SHORT).show();
             goToPostDescription();
@@ -242,6 +231,73 @@ public class EditPostActivity extends AppCompatActivity implements View.OnClickL
         finish();
     }
 
+    private void updateNewsFeedDB(final Boolean isChoosePic){
+        mDatabase.child("newsfeed").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.hasChild(key)){
+                    if(isChoosePic){
+                        mDatabase.child("newsfeed").child(key).child("title").setValue(etTitle.getText().toString().trim());
+                        mDatabase.child("newsfeed").child(key).child("desc").setValue(etDescription.getText().toString().trim());
+                        mDatabase.child("newsfeed").child(key).child("image").setValue(downloadUri.toString());
+                    }else{
+                        mDatabase.child("newsfeed").child(key).child("title").setValue(etTitle.getText().toString().trim());
+                        mDatabase.child("newsfeed").child(key).child("desc").setValue(etDescription.getText().toString().trim());
+                    }
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Toast.makeText(EditPostActivity.this, databaseError.toException().getMessage(), Toast.LENGTH_SHORT);
+            }
+        });
+    }
+
+    private void updateFindDB(final Boolean isChoosePic){
+        mDatabase.child("find").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.hasChild(key)){
+                    if(isChoosePic){
+                        mDatabase.child("find").child(key).child("title").setValue(etTitle.getText().toString().trim());
+                        mDatabase.child("find").child(key).child("desc").setValue(etDescription.getText().toString().trim());
+                        mDatabase.child("find").child(key).child("image").setValue(downloadUri.toString());
+                    }else{
+                        mDatabase.child("find").child(key).child("title").setValue(etTitle.getText().toString().trim());
+                        mDatabase.child("find").child(key).child("desc").setValue(etDescription.getText().toString().trim());
+                    }
+
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Toast.makeText(EditPostActivity.this, databaseError.toException().getMessage(), Toast.LENGTH_SHORT);
+            }
+        });
+    }
+
+    private void updateFoundDB(final Boolean isChoosePic){
+        mDatabase.child("found").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.hasChild(key)){
+                    if(isChoosePic){
+                        mDatabase.child("found").child(key).child("title").setValue(etTitle.getText().toString().trim());
+                        mDatabase.child("found").child(key).child("desc").setValue(etDescription.getText().toString().trim());
+                        mDatabase.child("found").child(key).child("image").setValue(downloadUri.toString());
+                    }else{
+                        mDatabase.child("found").child(key).child("title").setValue(etTitle.getText().toString().trim());
+                        mDatabase.child("found").child(key).child("desc").setValue(etDescription.getText().toString().trim());
+                    }
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Toast.makeText(EditPostActivity.this, databaseError.toException().getMessage(), Toast.LENGTH_SHORT);
+            }
+        });
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -250,4 +306,16 @@ public class EditPostActivity extends AppCompatActivity implements View.OnClickL
             postImage.setImageURI(mImageUri);
         }
     }
+
+    @Override
+    public void onClick(View view) {
+        if (view.getId() == R.id.postImage) {
+            Intent galleryIntent = new Intent(Intent.ACTION_GET_CONTENT);
+            galleryIntent.setType("image/*");
+            startActivityForResult(galleryIntent, GALLERY_REQUEST);
+        } else if (view.getId() == R.id.btnConfirm) {
+            startUpdate();
+        }
+    }
+
 }

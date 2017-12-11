@@ -11,10 +11,14 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -37,12 +41,12 @@ public class NewPostActivity extends AppCompatActivity implements View.OnClickLi
     private static final int GALLERY_REQUEST = 1;
     private String key;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_post);
         initInstance();
+
     }
 
     private void initInstance() {
@@ -93,7 +97,6 @@ public class NewPostActivity extends AppCompatActivity implements View.OnClickLi
                     map4.put("date", getIntent().getStringExtra("date"));
                     map4.put("key", FirebaseAuth.getInstance().getUid());
                     message_key2.updateChildren(map4);
-
                     mProgress.dismiss();
                     Toast.makeText(NewPostActivity.this, "โพสต์แล้วจ้าาา", Toast.LENGTH_SHORT).show();
                     goToMain();
