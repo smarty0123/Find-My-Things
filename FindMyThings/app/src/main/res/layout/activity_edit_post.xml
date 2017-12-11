@@ -27,18 +27,25 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
-
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="แก้ไขกระทู้"
+                    android:textStyle="bold"
+                    android:textSize="24dp"
+                    android:layout_marginTop="8dp"
+                    android:gravity="center"/>
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
-
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="8dp"
                         android:gravity="center"
+                        android:textStyle="bold"
                         android:text="หัวข้อ"
-                        android:textSize="16dp" />
+                        android:textSize="20dp" />
 
                     <EditText
                         android:id="@+id/etTitle"
@@ -48,7 +55,7 @@
                         android:layout_marginTop="8dp"
                         android:gravity="center"
                         android:text="title"
-                        android:textSize="24sp" />
+                        android:textSize="20dp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -62,7 +69,8 @@
                         android:layout_marginLeft="8dp"
                         android:layout_marginTop="16dp"
                         android:text="รายละเอียด"
-                        android:textSize="16dp" />
+                        android:textStyle="bold"
+                        android:textSize="20dp" />
 
                     <EditText
                         android:id="@+id/etDescription"
@@ -83,7 +91,8 @@
                     android:layout_marginLeft="8dp"
                     android:layout_marginTop="16dp"
                     android:text="รูปภาพ"
-                    android:textSize="16dp" />
+                    android:textStyle="bold"
+                    android:textSize="20dp" />
                 <ImageView
                     android:id="@+id/postImage"
                     android:layout_width="match_parent"
@@ -98,8 +107,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:text="ช่องทางติดต่อ"
-                    android:textSize="24dp"
+                    android:text="เบอร์ติดต่อ"
+                    android:textSize="20dp"
                     android:textStyle="bold" />
 
                 <EditText
@@ -108,6 +117,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="16dp"
                     android:layout_marginTop="8dp"
+                    android:inputType="phone"
                     android:text="bla bla" />
 
                 <Button

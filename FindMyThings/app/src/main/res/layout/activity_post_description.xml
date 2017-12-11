@@ -68,7 +68,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:text="ช่องทางติดต่อ"
+                    android:text="เบอร์ติดต่อ"
                     android:textSize="24dp"
                     android:textStyle="bold" />
 
