@@ -218,4 +218,11 @@ public class MyPostActivity extends AppCompatActivity {
         }
         newsFeedAdapter.notifyItemRangeChanged(0, newsFeedAdapter.getItemCount());
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(MyPostActivity.this, MainActivity.class));
+        finish();
+    }
 }

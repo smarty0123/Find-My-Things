@@ -17,6 +17,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthException;
 
 import finalproject.se.kmitl.findmythings.R;
 
@@ -89,8 +90,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             finish();
                         } else {
                             mLoginProgress.hide();
-                            Log.w("", "signInWithEmail:failure", task.getException());
-                            Toast.makeText(LoginActivity.this, "Authentication failed.",
+                            FirebaseAuthException e = (FirebaseAuthException) task.getException();
+                            Toast.makeText(LoginActivity.this, e.getMessage(),
                                     Toast.LENGTH_SHORT).show();
                         }
 

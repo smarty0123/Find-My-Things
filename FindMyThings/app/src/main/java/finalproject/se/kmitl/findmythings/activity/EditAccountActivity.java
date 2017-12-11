@@ -148,11 +148,13 @@ public class EditAccountActivity extends AppCompatActivity implements View.OnCli
                             if (child.getKey().toString().equals("displayname")) {
                                 String name = (String) child.getValue();
                                 tvDisplayName.setText(name);
+                                etDisplayName.setText(name);
                             } else if (child.getKey().toString().equals("email")) {
                                 String email = (String) child.getValue();
                                 tvEmail.setText(email);
                             } else if (child.getKey().toString().equals("phone")) {
                                 String phoneNum = (String) child.getValue();
+                                etPhoneNumber.setText(phoneNum);
                             }else if(child.getKey().toString().equals("profilepic")){
                                 String img = (String) child.getValue();
                                 Glide.with(EditAccountActivity.this).load(Uri.parse(img)).into(profileImage);
@@ -220,5 +222,10 @@ public class EditAccountActivity extends AppCompatActivity implements View.OnCli
         }
     }
 
-
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(EditAccountActivity.this, MainActivity.class));
+        finish();
+    }
 }
