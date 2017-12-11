@@ -3,7 +3,6 @@ package finalproject.se.kmitl.findmythings.activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
@@ -20,7 +19,6 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -62,7 +60,25 @@ public class PostDescription extends AppCompatActivity implements View.OnClickLi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post_description);
         initInstance();
+        setAppBar();
         setNavigation();
+        displayPost();
+    }
+
+    private void initInstance() {
+        tvTitle = findViewById(R.id.tvTitle);
+        postImage = findViewById(R.id.postImage);
+        tvDesription = findViewById(R.id.tvDescription);
+        tvContact = findViewById(R.id.tvContact);
+        btnDeletePost = findViewById(R.id.btnDeletePost);
+        btnEditPost = findViewById(R.id.btnEditPost);
+        mToolbar = findViewById(R.id.main_page_toolbar);
+        drawerLayout = findViewById(R.id.drawer_layout);
+        navigationView = findViewById(R.id.nav_view);
+
+        btnDeletePost.setOnClickListener(this);
+        btnEditPost.setOnClickListener(this);
+
         if (getIntent().getStringExtra("from").equals("newsfeed")) {
             mDatabase = FirebaseDatabase.getInstance().getReference().child("newsfeed");
         } else if (getIntent().getStringExtra("from").equals("find")) {
@@ -70,20 +86,46 @@ public class PostDescription extends AppCompatActivity implements View.OnClickLi
         } else {
             mDatabase = FirebaseDatabase.getInstance().getReference().child("found");
         }
+    }
 
-        userProfileDB = FirebaseDatabase.getInstance().getReference().child("user_profile");
-        userProfileDB.child(FirebaseAuth.getInstance().getUid()).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                phoneNumber = (String) dataSnapshot.child("phone").getValue();
-                tvContact.setText(phoneNumber);
-            }
+    private void setNavigation() {
+        View headerView = navigationView.getHeaderView(0);
+        tvDisplayName = headerView.findViewById(R.id.displayName);
+        tvEmail = headerView.findViewById(R.id.email);
+        profileImage = headerView.findViewById(R.id.profile_image);
+        if (FirebaseAuth.getInstance().getUid() != null) {
+            child = FirebaseDatabase.getInstance().getReference().child("user_profile");
+            child.child(FirebaseAuth.getInstance().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        for (DataSnapshot child : dataSnapshot.getChildren()) {
+                            if (child.getKey().toString().equals("displayname")) {
+                                String name = (String) child.getValue();
+                                tvDisplayName.setText(name);
+                            } else if (child.getKey().toString().equals("email")) {
+                                String email = (String) child.getValue();
+                                tvEmail.setText(email);
+                            } else if (child.getKey().toString().equals("phone")) {
+                                String phoneNum = (String) child.getValue();
+                            } else if (child.getKey().toString().equals("profilepic")) {
+                                String img = (String) child.getValue();
+                                Glide.with(PostDescription.this).load(Uri.parse(img)).into(profileImage);
+                            }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+                        }
+                    }
+                }
 
-            }
-        });
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+        }
+    }
+
+    private void setAppBar() {
         setSupportActionBar(mToolbar);
         actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, mToolbar,
                 R.string.drawer_open, R.string.drawer_open);
@@ -126,9 +168,10 @@ public class PostDescription extends AppCompatActivity implements View.OnClickLi
                 return true;
             }
         });
+    }
 
+    private void displayPost() {
         key = getIntent().getStringExtra("key");
-
         mDatabase.child(key).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -145,7 +188,7 @@ public class PostDescription extends AppCompatActivity implements View.OnClickLi
                         btnDeletePost.setVisibility(View.VISIBLE);
                         btnEditPost.setVisibility(View.VISIBLE);
                     }
-                }else{
+                } else {
                     Intent intent = new Intent(PostDescription.this, MainActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
@@ -159,61 +202,7 @@ public class PostDescription extends AppCompatActivity implements View.OnClickLi
 
             }
         });
-
     }
-
-    private void setNavigation() {
-        View headerView = navigationView.getHeaderView(0);
-        tvDisplayName = headerView.findViewById(R.id.displayName);
-        tvEmail = headerView.findViewById(R.id.email);
-        profileImage = headerView.findViewById(R.id.profile_image);
-        if (FirebaseAuth.getInstance().getUid() != null) {
-            child = FirebaseDatabase.getInstance().getReference().child("user_profile");
-            child.child(FirebaseAuth.getInstance().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    if (dataSnapshot.exists()) {
-                        for (DataSnapshot child : dataSnapshot.getChildren()) {
-                            if (child.getKey().toString().equals("displayname")) {
-                                String name = (String) child.getValue();
-                                tvDisplayName.setText(name);
-                            } else if (child.getKey().toString().equals("email")) {
-                                String email = (String) child.getValue();
-                                tvEmail.setText(email);
-                            } else if (child.getKey().toString().equals("phone")) {
-                                String phoneNum = (String) child.getValue();
-                            }else if(child.getKey().toString().equals("profilepic")){
-                                String img = (String) child.getValue();
-                                Glide.with(PostDescription.this).load(Uri.parse(img)).into(profileImage);
-                            }
-
-                        }
-                    }
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
-            });
-        }
-    }
-
-    private void initInstance() {
-        tvTitle = findViewById(R.id.tvTitle);
-        postImage = findViewById(R.id.postImage);
-        tvDesription = findViewById(R.id.tvDescription);
-        tvContact = findViewById(R.id.tvContact);
-        btnDeletePost = findViewById(R.id.btnDeletePost);
-        btnEditPost = findViewById(R.id.btnEditPost);
-        mToolbar = findViewById(R.id.main_page_toolbar);
-        drawerLayout = findViewById(R.id.drawer_layout);
-        navigationView = findViewById(R.id.nav_view);
-
-        btnDeletePost.setOnClickListener(this);
-        btnEditPost.setOnClickListener(this);
-    }
-
 
     @Override
     public void onClick(View view) {
@@ -221,7 +210,6 @@ public class PostDescription extends AppCompatActivity implements View.OnClickLi
             AlertDialog.Builder builder1 = new AlertDialog.Builder(PostDescription.this);
             builder1.setMessage("คุณต้องการลบโพสต์ใช่หรือไม่");
             builder1.setCancelable(true);
-
             builder1.setPositiveButton(
                     "ใช่",
                     new DialogInterface.OnClickListener() {

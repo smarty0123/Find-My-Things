@@ -10,7 +10,6 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -76,6 +75,65 @@ public class EditPostActivity extends AppCompatActivity implements View.OnClickL
 
     }
 
+    private void initInstance() {
+        mToolbar = findViewById(R.id.main_page_toolbar);
+        drawerLayout = findViewById(R.id.drawer_layout);
+        navigationView = findViewById(R.id.nav_view);
+
+        etTitle = findViewById(R.id.etTitle);
+        etDescription = findViewById(R.id.etDescription);
+        postImage = findViewById(R.id.postImage);
+        tvContact = findViewById(R.id.tvContact);
+        btnConfirm = findViewById(R.id.btnConfirm);
+
+        mProgress = new ProgressDialog(this);
+
+        fragmentType = getIntent().getStringExtra("fragmenttype");
+
+        postImage.setOnClickListener(this);
+        btnConfirm.setOnClickListener(this);
+
+        mStorage = FirebaseStorage.getInstance().getReference();
+
+        mDatabase = FirebaseDatabase.getInstance().getReference().child(fragmentType);
+
+    }
+    private void setNavigation() {
+        View headerView = navigationView.getHeaderView(0);
+        tvDisplayName = headerView.findViewById(R.id.displayName);
+        tvEmail = headerView.findViewById(R.id.email);
+        profileImage = headerView.findViewById(R.id.profile_image);
+        if (FirebaseAuth.getInstance().getUid() != null) {
+            child = FirebaseDatabase.getInstance().getReference().child("user_profile");
+            child.child(FirebaseAuth.getInstance().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.exists()) {
+                        for (DataSnapshot child : dataSnapshot.getChildren()) {
+                            if (child.getKey().toString().equals("displayname")) {
+                                String name = (String) child.getValue();
+                                tvDisplayName.setText(name);
+                            } else if (child.getKey().toString().equals("email")) {
+                                String email = (String) child.getValue();
+                                tvEmail.setText(email);
+                            } else if (child.getKey().toString().equals("phone")) {
+                                String phoneNum = (String) child.getValue();
+                            } else if (child.getKey().toString().equals("profilepic")) {
+                                String img = (String) child.getValue();
+                                Glide.with(EditPostActivity.this).load(Uri.parse(img)).into(profileImage);
+                            }
+
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    Toast.makeText(EditPostActivity.this, databaseError.toString(), Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+    }
 
     private void setAppBar() {
         setSupportActionBar(mToolbar);
@@ -122,66 +180,6 @@ public class EditPostActivity extends AppCompatActivity implements View.OnClickL
         });
     }
 
-    private void initInstance() {
-        mToolbar = findViewById(R.id.main_page_toolbar);
-        drawerLayout = findViewById(R.id.drawer_layout);
-        navigationView = findViewById(R.id.nav_view);
-
-        etTitle = findViewById(R.id.etTitle);
-        etDescription = findViewById(R.id.etDescription);
-        postImage = findViewById(R.id.postImage);
-        tvContact = findViewById(R.id.tvContact);
-        btnConfirm = findViewById(R.id.btnConfirm);
-
-        mProgress = new ProgressDialog(this);
-
-        fragmentType = getIntent().getStringExtra("fragmenttype");
-
-        postImage.setOnClickListener(this);
-        btnConfirm.setOnClickListener(this);
-
-        mStorage = FirebaseStorage.getInstance().getReference();
-
-        mDatabase = FirebaseDatabase.getInstance().getReference().child(fragmentType);
-
-    }
-
-    private void setNavigation() {
-        View headerView = navigationView.getHeaderView(0);
-        tvDisplayName = headerView.findViewById(R.id.displayName);
-        tvEmail = headerView.findViewById(R.id.email);
-        profileImage = headerView.findViewById(R.id.profile_image);
-        if (FirebaseAuth.getInstance().getUid() != null) {
-            child = FirebaseDatabase.getInstance().getReference().child("user_profile");
-            child.child(FirebaseAuth.getInstance().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    if (dataSnapshot.exists()) {
-                        for (DataSnapshot child : dataSnapshot.getChildren()) {
-                            if (child.getKey().toString().equals("displayname")) {
-                                String name = (String) child.getValue();
-                                tvDisplayName.setText(name);
-                            } else if (child.getKey().toString().equals("email")) {
-                                String email = (String) child.getValue();
-                                tvEmail.setText(email);
-                            } else if (child.getKey().toString().equals("phone")) {
-                                String phoneNum = (String) child.getValue();
-                            } else if (child.getKey().toString().equals("profilepic")) {
-                                String img = (String) child.getValue();
-                                Glide.with(EditPostActivity.this).load(Uri.parse(img)).into(profileImage);
-                            }
-
-                        }
-                    }
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
-            });
-        }
-    }
 
     private void initInformation() {
         etTitle.setText(getIntent().getStringExtra("title"));
@@ -220,8 +218,7 @@ public class EditPostActivity extends AppCompatActivity implements View.OnClickL
                     goToPostDescription();
                 }
             });
-        }
-        else{
+        } else {
             mProgress.setMessage("กำลังแก้ไข...");
             mProgress.show();
             key = getIntent().getStringExtra("key");
@@ -237,7 +234,7 @@ public class EditPostActivity extends AppCompatActivity implements View.OnClickL
     private void goToPostDescription() {
         Intent intent = new Intent(EditPostActivity.this, PostDescription.class);
         intent.putExtra("from", "newsfeed");
-        if(mImageUri != null){
+        if (mImageUri != null) {
             intent.putExtra("image", mImageUri.toString());
         }
         intent.putExtra("key", getIntent().getStringExtra("key"));
