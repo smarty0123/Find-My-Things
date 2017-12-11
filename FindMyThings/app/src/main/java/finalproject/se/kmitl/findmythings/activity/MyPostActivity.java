@@ -14,8 +14,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -51,6 +53,7 @@ public class MyPostActivity extends AppCompatActivity {
 
     private NewsFeedAdapter newsFeedAdapter;
     private NewsFeed newsFeed;
+    private ImageView profileImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +84,7 @@ public class MyPostActivity extends AppCompatActivity {
         View headerView = navigationView.getHeaderView(0);
         tvDisplayName = headerView.findViewById(R.id.displayName);
         tvEmail = headerView.findViewById(R.id.email);
+        profileImage = headerView.findViewById(R.id.profile_image);
         if (FirebaseAuth.getInstance().getUid() != null) {
             child = FirebaseDatabase.getInstance().getReference().child("user_profile");
             child.child(FirebaseAuth.getInstance().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -96,6 +100,9 @@ public class MyPostActivity extends AppCompatActivity {
                                 tvEmail.setText(email);
                             } else if (child.getKey().toString().equals("phone")) {
                                 String phoneNum = (String) child.getValue();
+                            }else if(child.getKey().toString().equals("profilepic")){
+                                String img = (String) child.getValue();
+                                Glide.with(MyPostActivity.this).load(Uri.parse(img)).into(profileImage);
                             }
 
                         }

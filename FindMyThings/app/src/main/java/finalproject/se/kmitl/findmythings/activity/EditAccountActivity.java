@@ -15,9 +15,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -53,6 +55,7 @@ public class EditAccountActivity extends AppCompatActivity implements View.OnCli
     private String key;
 
     private DatabaseReference mDatabase;
+    private ImageView profileImage;
 
 
     @Override
@@ -134,7 +137,7 @@ public class EditAccountActivity extends AppCompatActivity implements View.OnCli
         View headerView = navigationView.getHeaderView(0);
         tvDisplayName = headerView.findViewById(R.id.displayName);
         tvEmail = headerView.findViewById(R.id.email);
-
+        profileImage = headerView.findViewById(R.id.profile_image);
         if (FirebaseAuth.getInstance().getUid() != null) {
             child = FirebaseDatabase.getInstance().getReference().child("user_profile");
             child.child(FirebaseAuth.getInstance().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -150,6 +153,9 @@ public class EditAccountActivity extends AppCompatActivity implements View.OnCli
                                 tvEmail.setText(email);
                             } else if (child.getKey().toString().equals("phone")) {
                                 String phoneNum = (String) child.getValue();
+                            }else if(child.getKey().toString().equals("profilepic")){
+                                String img = (String) child.getValue();
+                                Glide.with(EditAccountActivity.this).load(Uri.parse(img)).into(profileImage);
                             }
 
                         }
@@ -178,6 +184,7 @@ public class EditAccountActivity extends AppCompatActivity implements View.OnCli
                     key = FirebaseAuth.getInstance().getUid();
                     mDatabase.child(key).child("displayname").setValue(etDisplayName.getText().toString().trim());
                     mDatabase.child(key).child("phone").setValue(etPhoneNumber.getText().toString().trim());
+                    mDatabase.child(key).child("profilepic").setValue(downloadUri.toString());
                     mProgress.dismiss();
                     Toast.makeText(EditAccountActivity.this, "แก้ไขเรียบร้อย", Toast.LENGTH_SHORT).show();
                     goToMain();

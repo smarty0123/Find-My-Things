@@ -1,6 +1,7 @@
 package finalproject.se.kmitl.findmythings.activity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
@@ -12,9 +13,11 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -41,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
     private SectionPagerAdapter mSectionPagerAdapter;
     private TextView tvDisplayName;
     private TextView tvEmail;
+    private ImageView profileImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
         View headerView = navigationView.getHeaderView(0);
         tvDisplayName = headerView.findViewById(R.id.displayName);
         tvEmail = headerView.findViewById(R.id.email);
-
+        profileImage = headerView.findViewById(R.id.profile_image);
         if(FirebaseAuth.getInstance().getUid() != null){
             child = FirebaseDatabase.getInstance().getReference().child("user_profile");
             child.child(FirebaseAuth.getInstance().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -75,6 +79,9 @@ public class MainActivity extends AppCompatActivity {
                                 tvEmail.setText(email);
                             }else if(child.getKey().toString().equals("phone")){
                                 String phoneNum = (String) child.getValue();
+                            }else if(child.getKey().toString().equals("profilepic")){
+                                String img = (String) child.getValue();
+                                Glide.with(MainActivity.this).load(Uri.parse(img)).into(profileImage);
                             }
 
                         }

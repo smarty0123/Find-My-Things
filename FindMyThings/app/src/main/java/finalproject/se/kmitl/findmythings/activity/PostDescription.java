@@ -54,6 +54,7 @@ public class PostDescription extends AppCompatActivity implements View.OnClickLi
     private String image;
     private String description;
     private String date;
+    private ImageView profileImage;
 
     @Override
 
@@ -165,7 +166,7 @@ public class PostDescription extends AppCompatActivity implements View.OnClickLi
         View headerView = navigationView.getHeaderView(0);
         tvDisplayName = headerView.findViewById(R.id.displayName);
         tvEmail = headerView.findViewById(R.id.email);
-
+        profileImage = headerView.findViewById(R.id.profile_image);
         if (FirebaseAuth.getInstance().getUid() != null) {
             child = FirebaseDatabase.getInstance().getReference().child("user_profile");
             child.child(FirebaseAuth.getInstance().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -181,6 +182,9 @@ public class PostDescription extends AppCompatActivity implements View.OnClickLi
                                 tvEmail.setText(email);
                             } else if (child.getKey().toString().equals("phone")) {
                                 String phoneNum = (String) child.getValue();
+                            }else if(child.getKey().toString().equals("profilepic")){
+                                String img = (String) child.getValue();
+                                Glide.with(PostDescription.this).load(Uri.parse(img)).into(profileImage);
                             }
 
                         }

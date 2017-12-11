@@ -63,6 +63,7 @@ public class EditPostActivity extends AppCompatActivity implements View.OnClickL
     private String fragmentType;
     private DatabaseReference mDatabase;
     private Uri downloadUri;
+    private ImageView profileImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -149,7 +150,7 @@ public class EditPostActivity extends AppCompatActivity implements View.OnClickL
         View headerView = navigationView.getHeaderView(0);
         tvDisplayName = headerView.findViewById(R.id.displayName);
         tvEmail = headerView.findViewById(R.id.email);
-
+        profileImage = headerView.findViewById(R.id.profile_image);
         if (FirebaseAuth.getInstance().getUid() != null) {
             child = FirebaseDatabase.getInstance().getReference().child("user_profile");
             child.child(FirebaseAuth.getInstance().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -165,6 +166,9 @@ public class EditPostActivity extends AppCompatActivity implements View.OnClickL
                                 tvEmail.setText(email);
                             } else if (child.getKey().toString().equals("phone")) {
                                 String phoneNum = (String) child.getValue();
+                            }else if(child.getKey().toString().equals("profilepic")){
+                                String img = (String) child.getValue();
+                                Glide.with(EditPostActivity.this).load(Uri.parse(img)).into(profileImage);
                             }
 
                         }
