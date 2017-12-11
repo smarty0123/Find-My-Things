@@ -35,7 +35,6 @@ public class PostDescription extends AppCompatActivity implements View.OnClickLi
 
     private String key;
     private DatabaseReference mDatabase;
-    private DatabaseReference userProfileDB;
     private DatabaseReference child;
 
     private TextView tvTitle;

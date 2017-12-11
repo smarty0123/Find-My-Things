@@ -30,7 +30,8 @@
         <activity
             android:name=".activity.EditAccountActivity"
             android:windowSoftInputMode="stateHidden" />
-
+        <activity android:name=".activity.FilterChooseActivity" />
+        <activity android:name=".activity.FilteredPostActivity"></activity>
     </application>
 
 </manifest>

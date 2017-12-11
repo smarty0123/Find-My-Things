@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/holo_orange_light"
     android:orientation="vertical"
     tools:context="finalproject.se.kmitl.findmythings.activity.CreateNewPostActivity">
 
@@ -24,7 +23,7 @@
         android:layout_height="50dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="20dp"
-        android:background="@drawable/input_background"
+        style="@style/spinner_style"
         android:gravity="center"
         android:hint="ชื่อหัวข้อ" />
 
@@ -38,11 +37,11 @@
 
     <Spinner
         android:id="@+id/planets_spinner"
+        style="@style/spinner_style"
         android:layout_width="200dp"
         android:layout_height="35dp"
         android:layout_gravity="center"
         android:layout_marginTop="20dp"
-        android:background="@drawable/input_background"
         android:gravity="center" />
 
     <TextView
@@ -69,6 +68,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="20dp"
-        android:background="@android:color/holo_blue_light"
+        android:background="@drawable/button_background"
         android:text="ต่อไป" />
 </LinearLayout>
