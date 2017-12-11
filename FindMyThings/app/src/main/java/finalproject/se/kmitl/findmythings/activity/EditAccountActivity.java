@@ -173,12 +173,10 @@ public class EditAccountActivity extends AppCompatActivity implements View.OnCli
     }
 
     private void startUpdate() {
-        mProgress.setMessage("กำลังแก้ไข...");
-        mProgress.show();
-        if(mImageUri.toString().isEmpty()){
-            goToMain();
-        }else{
-            StorageReference filePath = mStorage.child("userpic").child(mImageUri.getLastPathSegment());
+        if (mImageUri != null) {
+            mProgress.setMessage("กำลังแก้ไข...");
+            mProgress.show();
+            final StorageReference filePath = mStorage.child("userpic").child(mImageUri.getLastPathSegment());
             filePath.putFile(mImageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
@@ -192,6 +190,15 @@ public class EditAccountActivity extends AppCompatActivity implements View.OnCli
                     goToMain();
                 }
             });
+        }else{
+            mProgress.setMessage("กำลังแก้ไข...");
+            mProgress.show();
+            key = FirebaseAuth.getInstance().getUid();
+            mDatabase.child(key).child("displayname").setValue(etDisplayName.getText().toString().trim());
+            mDatabase.child(key).child("phone").setValue(etPhoneNumber.getText().toString().trim());
+            mProgress.dismiss();
+            Toast.makeText(EditAccountActivity.this, "แก้ไขเรียบร้อย", Toast.LENGTH_SHORT).show();
+            goToMain();
         }
     }
 
