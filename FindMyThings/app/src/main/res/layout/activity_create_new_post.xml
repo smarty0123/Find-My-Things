@@ -23,7 +23,7 @@
         android:layout_height="50dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="20dp"
-        style="@style/spinner_style"
+        android:background="@drawable/edit_text_design"
         android:gravity="center"
         android:hint="ชื่อหัวข้อ" />
 
