@@ -10,6 +10,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -71,7 +72,6 @@ public class EditPostActivity extends AppCompatActivity implements View.OnClickL
         setNavigation();
         setAppBar();
         initInformation();
-
     }
 
     private void initInstance() {
@@ -314,7 +314,12 @@ public class EditPostActivity extends AppCompatActivity implements View.OnClickL
             galleryIntent.setType("image/*");
             startActivityForResult(galleryIntent, GALLERY_REQUEST);
         } else if (view.getId() == R.id.btnConfirm) {
-            startUpdate();
+            String title = etTitle.getText().toString().trim();
+            if(TextUtils.isEmpty(title)){
+                etTitle.setError("กรุณาใส่ชื่อหัวข้อ");
+            }else{
+                startUpdate();
+            }
         }
     }
 

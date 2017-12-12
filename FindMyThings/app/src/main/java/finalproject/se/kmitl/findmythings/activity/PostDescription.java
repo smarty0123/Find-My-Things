@@ -53,6 +53,7 @@ public class PostDescription extends AppCompatActivity implements View.OnClickLi
     private ImageView profileImage;
     private ImageView userPostImage;
     private TextView userPostName;
+    private TextView tvPostDate;
 
     @Override
 
@@ -66,6 +67,7 @@ public class PostDescription extends AppCompatActivity implements View.OnClickLi
     }
 
     private void initInstance() {
+        tvPostDate = findViewById(R.id.postDate);
         tvTitle = findViewById(R.id.tvTitle);
         postImage = findViewById(R.id.postImage);
         tvDesription = findViewById(R.id.tvDescription);
@@ -181,6 +183,7 @@ public class PostDescription extends AppCompatActivity implements View.OnClickLi
                     description = (String) dataSnapshot.child("desc").getValue();
                     keyUser = (String) dataSnapshot.child("key").getValue();
                     date = (String) dataSnapshot.child("date").getValue();
+                    tvPostDate.setText("โพสต์วันที่ "+ date);
                     Glide.with(getApplicationContext()).load(Uri.parse(image)).into(postImage);
                     tvTitle.setText(title);
                     tvDesription.setText(description);
