@@ -2,6 +2,7 @@ package finalproject.se.kmitl.findmythings.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,15 +16,12 @@ import finalproject.se.kmitl.findmythings.activity.PostDescription;
 import finalproject.se.kmitl.findmythings.adapter.holder.FindThingsHolder;
 import finalproject.se.kmitl.findmythings.model.FindThingsPost;
 
-/**
- * Created by SMART on 12/11/2560.
- */
-
-public class FindThingsAdapter extends RecyclerView.Adapter<FindThingsHolder>{
+public class FindThingsAdapter extends RecyclerView.Adapter<FindThingsHolder> {
 
     private Context context;
     private List<FindThingsPost> data;
-    public FindThingsAdapter(Context context){
+
+    public FindThingsAdapter(Context context) {
         this.context = context;
         data = new ArrayList<>();
     }
@@ -43,8 +41,10 @@ public class FindThingsAdapter extends RecyclerView.Adapter<FindThingsHolder>{
 
     @Override
     public void onBindViewHolder(FindThingsHolder holder, final int position) {
+        /*if (position % 2 == 0) {
+            holder.postLinear.setBackgroundResource(R.color.colorAccent);
+        }*/
         holder.postTitle.setText(data.get(position).getTitle());
-
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

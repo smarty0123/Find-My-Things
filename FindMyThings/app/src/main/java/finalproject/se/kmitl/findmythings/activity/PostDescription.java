@@ -110,7 +110,7 @@ public class PostDescription extends AppCompatActivity implements View.OnClickLi
                                 tvEmail.setText(email);
                             } else if (child.getKey().toString().equals("profilepic")) {
                                 String img = (String) child.getValue();
-                                Glide.with(PostDescription.this).load(Uri.parse(img)).into(profileImage);
+                                Glide.with(getApplicationContext()).load(Uri.parse(img)).into(profileImage);
                             }
 
                         }
