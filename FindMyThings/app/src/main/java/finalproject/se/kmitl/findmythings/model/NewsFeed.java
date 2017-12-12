@@ -10,6 +10,15 @@ public class NewsFeed {
     private String title;
     private Uri image;
     private String key;
+    private String date;
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
 
     public String getKey() {
         return key;

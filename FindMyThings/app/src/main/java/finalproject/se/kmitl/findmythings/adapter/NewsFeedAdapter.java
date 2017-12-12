@@ -48,6 +48,7 @@ public class NewsFeedAdapter extends RecyclerView.Adapter<NewsFeedHolder> {
     @Override
     public void onBindViewHolder(NewsFeedHolder holder, final int position) {
         Glide.with(context).load(data.get(position).getImage()).into(holder.imageView);
+        holder.postDate.setText("โพสต์วันที่ " + data.get(position).getDate());
         holder.postTitle.setText(data.get(position).getTitle());
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

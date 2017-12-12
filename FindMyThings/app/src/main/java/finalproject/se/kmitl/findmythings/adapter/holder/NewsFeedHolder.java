@@ -5,6 +5,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 import finalproject.se.kmitl.findmythings.R;
 
 /**
@@ -13,10 +15,12 @@ import finalproject.se.kmitl.findmythings.R;
 
 public class NewsFeedHolder extends RecyclerView.ViewHolder{
     public TextView postTitle;
+    public TextView postDate;
     public ImageView imageView;
     public NewsFeedHolder(View itemView) {
         super(itemView);
         postTitle = itemView.findViewById(R.id.postTitle);
         imageView = itemView.findViewById(R.id.postImage);
+        postDate = itemView.findViewById(R.id.postDate);
     }
 }

@@ -210,6 +210,7 @@ public class FilteredPostActivity extends AppCompatActivity {
             String key = dataSnapshot.getKey();
             if(type.equals(thingsType)){
                 newsFeed = new NewsFeed();
+                newsFeed.setDate(date);
                 newsFeed.setTitle(title);
                 newsFeed.setImage(Uri.parse(image));
                 newsFeed.setKey(key);

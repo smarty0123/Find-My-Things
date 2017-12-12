@@ -208,6 +208,7 @@ public class MyPostActivity extends AppCompatActivity {
             String type = (String) ((DataSnapshot) i.next()).getValue();
             String key = dataSnapshot.getKey();
             newsFeed = new NewsFeed();
+            newsFeed.setDate(date);
             newsFeed.setTitle(title);
             newsFeed.setImage(Uri.parse(image));
             newsFeed.setKey(key);

@@ -107,6 +107,7 @@ public class NewPostActivity extends AppCompatActivity implements View.OnClickLi
             });
         }else{
             mProgress.hide();
+            Toast.makeText(NewPostActivity.this, "กรุณาใส่ภาพประกอบ", Toast.LENGTH_SHORT).show();
         }
     }
 

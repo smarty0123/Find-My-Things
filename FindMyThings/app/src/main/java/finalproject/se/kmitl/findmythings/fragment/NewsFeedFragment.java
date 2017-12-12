@@ -117,6 +117,7 @@ public class NewsFeedFragment extends Fragment {
             String key = dataSnapshot.getKey();
             newsFeed = new NewsFeed();
             newsFeed.setTitle(title);
+            newsFeed.setDate(date);
             newsFeed.setImage(Uri.parse(image));
             newsFeed.setKey(key);
             postModel.addNewsFeedList(newsFeed);

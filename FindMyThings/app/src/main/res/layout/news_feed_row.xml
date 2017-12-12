@@ -18,6 +18,16 @@
             android:textSize="16dp"
             android:textStyle="bold" />
 
+        <TextView
+            android:id="@+id/postDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:text="โพสต์วันที่ 12/12/2017"
+            android:textSize="10dp"
+            android:textStyle="bold" />
+
+
         <ImageView
             android:id="@+id/postImage"
             android:layout_width="match_parent"
