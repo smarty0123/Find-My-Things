@@ -40,9 +40,7 @@ public class ThingsFindingFragment extends Fragment implements View.OnClickListe
     private RecyclerView recyclerView;
     private PostModel postModel;
     private FindThingsPost findThingsPost;
-    private String desc;
-    private String image;
-    private String title;
+
 
     public ThingsFindingFragment() {
         // Required empty public constructor
@@ -113,10 +111,11 @@ public class ThingsFindingFragment extends Fragment implements View.OnClickListe
         Iterator i = dataSnapshot.getChildren().iterator();
         while (i.hasNext()) {
             String date = (String) ((DataSnapshot) i.next()).getValue();
-            desc = (String) ((DataSnapshot) i.next()).getValue();
-            image = (String) ((DataSnapshot) i.next()).getValue();
+            String desc = (String) ((DataSnapshot) i.next()).getValue();
+            String image = (String) ((DataSnapshot) i.next()).getValue();
             String userKey = (String) ((DataSnapshot) i.next()).getValue();
-            title = (String) ((DataSnapshot) i.next()).getValue();
+            String title = (String) ((DataSnapshot) i.next()).getValue();
+            String type = (String) ((DataSnapshot) i.next()).getValue();
             String key = dataSnapshot.getKey();
             findThingsPost = new FindThingsPost();
             findThingsPost.setTitle(title);

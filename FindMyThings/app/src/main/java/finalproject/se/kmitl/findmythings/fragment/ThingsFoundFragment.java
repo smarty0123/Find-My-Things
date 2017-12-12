@@ -36,9 +36,6 @@ public class ThingsFoundFragment extends Fragment implements View.OnClickListene
     private RecyclerView recyclerView;
     private DatabaseReference mDatabase;
     private PostModel postModel;
-    private String desc;
-    private String image;
-    private String title;
     private FoundThingsAdapter foundThingsAdapter;
     private FoundThingsPost foundThingsPost;
 
@@ -111,10 +108,11 @@ public class ThingsFoundFragment extends Fragment implements View.OnClickListene
         Iterator i = dataSnapshot.getChildren().iterator();
         while (i.hasNext()) {
             String date = (String) ((DataSnapshot) i.next()).getValue();
-            desc = (String) ((DataSnapshot) i.next()).getValue();
-            image = (String) ((DataSnapshot) i.next()).getValue();
+            String desc = (String) ((DataSnapshot) i.next()).getValue();
+            String image = (String) ((DataSnapshot) i.next()).getValue();
             String userKey = (String) ((DataSnapshot) i.next()).getValue();
-            title = (String) ((DataSnapshot) i.next()).getValue();
+            String title = (String) ((DataSnapshot) i.next()).getValue();
+            String type = (String) ((DataSnapshot) i.next()).getValue();
             String key = dataSnapshot.getKey();
             foundThingsPost = new FoundThingsPost();
             foundThingsPost.setTitle(title);

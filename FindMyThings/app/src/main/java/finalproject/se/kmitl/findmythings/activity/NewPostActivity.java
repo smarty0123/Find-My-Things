@@ -84,6 +84,7 @@ public class NewPostActivity extends AppCompatActivity implements View.OnClickLi
                     map2.put("desc", postDescription);
                     map2.put("date", getIntent().getStringExtra("date"));
                     map2.put("key", FirebaseAuth.getInstance().getUid());
+                    map2.put("type", getIntent().getStringExtra("type"));
                     message_key.updateChildren(map2);
 
                     Map<String, Object> map3 = new HashMap<>();
@@ -96,6 +97,7 @@ public class NewPostActivity extends AppCompatActivity implements View.OnClickLi
                     map4.put("desc", postDescription);
                     map4.put("date", getIntent().getStringExtra("date"));
                     map4.put("key", FirebaseAuth.getInstance().getUid());
+                    map4.put("type", getIntent().getStringExtra("type"));
                     message_key2.updateChildren(map4);
                     mProgress.dismiss();
                     Toast.makeText(NewPostActivity.this, "โพสต์แล้วจ้าาา", Toast.LENGTH_SHORT).show();

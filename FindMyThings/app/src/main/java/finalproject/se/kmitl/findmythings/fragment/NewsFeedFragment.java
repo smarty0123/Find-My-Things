@@ -39,9 +39,6 @@ public class NewsFeedFragment extends Fragment {
     private DatabaseReference mDatabase;
     private RecyclerView recyclerView;
     private PostModel postModel;
-    private String desc;
-    private String image;
-    private String title;
     private NewsFeedAdapter newsFeedAdapter;
     private NewsFeed newsFeed;
 
@@ -112,10 +109,11 @@ public class NewsFeedFragment extends Fragment {
         Iterator i = dataSnapshot.getChildren().iterator();
         while (i.hasNext()) {
             String date = (String) ((DataSnapshot) i.next()).getValue();
-            desc = (String) ((DataSnapshot) i.next()).getValue();
-            image = (String) ((DataSnapshot) i.next()).getValue();
+            String desc = (String) ((DataSnapshot) i.next()).getValue();
+            String image = (String) ((DataSnapshot) i.next()).getValue();
             String userKey = (String) ((DataSnapshot) i.next()).getValue();
-            title = (String) ((DataSnapshot) i.next()).getValue();
+            String title = (String) ((DataSnapshot) i.next()).getValue();
+            String type = (String) ((DataSnapshot) i.next()).getValue();
             String key = dataSnapshot.getKey();
             newsFeed = new NewsFeed();
             newsFeed.setTitle(title);

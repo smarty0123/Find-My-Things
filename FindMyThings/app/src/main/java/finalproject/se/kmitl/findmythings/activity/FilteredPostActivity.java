@@ -47,6 +47,9 @@ public class FilteredPostActivity extends AppCompatActivity {
     private PostModel postModel;
     private NewsFeedAdapter newsFeedAdapter;
     private NewsFeed newsFeed;
+    private String thingsType;
+    private String postType;
+    private String date;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,9 +67,14 @@ public class FilteredPostActivity extends AppCompatActivity {
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
 
+        thingsType = getIntent().getStringExtra("thingstype");
+        postType = getIntent().getStringExtra("posttype");
+        date = getIntent().getStringExtra("date");
+
         recyclerView = findViewById(R.id.filterPostRecycler);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        mDatabase = FirebaseDatabase.getInstance().getReference().child(getIntent().getStringExtra("posttype")).orderByChild("date").equalTo(getIntent().getStringExtra("date"));
+        mDatabase = FirebaseDatabase.getInstance().getReference().child(postType)
+                .orderByChild("date").equalTo(date);
         postModel = new PostModel();
         layoutManager.setReverseLayout(true);
         layoutManager.setStackFromEnd(true);
@@ -198,12 +206,15 @@ public class FilteredPostActivity extends AppCompatActivity {
             String image = (String) ((DataSnapshot) i.next()).getValue();
             String userKey = (String) ((DataSnapshot) i.next()).getValue();
             String title = (String) ((DataSnapshot) i.next()).getValue();
+            String type = (String) ((DataSnapshot) i.next()).getValue();
             String key = dataSnapshot.getKey();
-            newsFeed = new NewsFeed();
-            newsFeed.setTitle(title);
-            newsFeed.setImage(Uri.parse(image));
-            newsFeed.setKey(key);
-            postModel.addNewsFeedList(newsFeed);
+            if(type.equals(thingsType)){
+                newsFeed = new NewsFeed();
+                newsFeed.setTitle(title);
+                newsFeed.setImage(Uri.parse(image));
+                newsFeed.setKey(key);
+                postModel.addNewsFeedList(newsFeed);
+            }
         }
         int position = newsFeedAdapter.getItemCount() - 1;
         if (position >= 0) {
