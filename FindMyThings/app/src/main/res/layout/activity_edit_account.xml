@@ -40,7 +40,8 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -52,14 +53,18 @@
 
                     <EditText
                         android:id="@+id/etDisplayName"
-                        android:layout_width="wrap_content"
+                        android:layout_width="250dp"
                         android:layout_height="wrap_content"
-                        android:gravity="center" />
+                        android:layout_marginLeft="8dp"
+                        android:background="@drawable/edit_text_design"
+                        android:gravity="center"
+                        android:maxLength="20" />
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -71,16 +76,20 @@
 
                     <EditText
                         android:id="@+id/etPhoneNumber"
-                        android:layout_width="wrap_content"
+                        android:layout_width="150dp"
                         android:layout_height="wrap_content"
-                        android:gravity="center"/>
+                        android:layout_marginLeft="8dp"
+                        android:background="@drawable/edit_text_design"
+                        android:gravity="center"
+                        android:inputType="phone"
+                        android:maxLength="10" />
                 </LinearLayout>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="8dp"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="16dp"
                     android:text="รูปโปรไฟล์"
                     android:textSize="18dp" />
 
@@ -96,11 +105,18 @@
                     android:src="@mipmap/add_btn" />
 
                 <Button
+                    android:id="@+id/btnChangePic"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="คลิกเพื่อเปลี่ยนรูปโปรไฟล์" />
+
+                <Button
                     android:id="@+id/btnConfirm"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="16dp"
                     android:text="บันทึก" />
             </LinearLayout>
         </ScrollView>

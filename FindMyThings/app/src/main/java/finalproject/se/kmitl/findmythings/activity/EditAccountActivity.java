@@ -10,6 +10,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -46,6 +47,7 @@ public class EditAccountActivity extends AppCompatActivity implements View.OnCli
     private EditText etPhoneNumber;
     private Button btnConfirm;
     private ImageButton mSelectImage;
+    private Button btnChangePic;
 
     private static final int GALLERY_REQUEST = 1;
     private Uri mImageUri = null;
@@ -76,10 +78,12 @@ public class EditAccountActivity extends AppCompatActivity implements View.OnCli
         etPhoneNumber = findViewById(R.id.etPhoneNumber);
 
         mSelectImage = findViewById(R.id.selectImage);
-        mSelectImage.setOnClickListener(this);
 
         btnConfirm = findViewById(R.id.btnConfirm);
         btnConfirm.setOnClickListener(this);
+
+        btnChangePic = findViewById(R.id.btnChangePic);
+        btnChangePic.setOnClickListener(this);
 
         mProgress = new ProgressDialog(this);
 
@@ -155,9 +159,10 @@ public class EditAccountActivity extends AppCompatActivity implements View.OnCli
                             } else if (child.getKey().toString().equals("phone")) {
                                 String phoneNum = (String) child.getValue();
                                 etPhoneNumber.setText(phoneNum);
-                            }else if(child.getKey().toString().equals("profilepic")){
+                            } else if (child.getKey().toString().equals("profilepic")) {
                                 String img = (String) child.getValue();
-                                Glide.with(EditAccountActivity.this).load(Uri.parse(img)).into(profileImage);
+                                Glide.with(getApplicationContext()).load(Uri.parse(img)).into(profileImage);
+                                Glide.with(getApplicationContext()).load(Uri.parse(img)).into(mSelectImage);
                             }
 
                         }
@@ -173,33 +178,42 @@ public class EditAccountActivity extends AppCompatActivity implements View.OnCli
     }
 
     private void startUpdate() {
-        if (mImageUri != null) {
-            mProgress.setMessage("กำลังแก้ไข...");
-            mProgress.show();
-            final StorageReference filePath = mStorage.child("userpic").child(mImageUri.getLastPathSegment());
-            filePath.putFile(mImageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    downloadUri = taskSnapshot.getDownloadUrl();
-                    key = FirebaseAuth.getInstance().getUid();
-                    mDatabase.child(key).child("displayname").setValue(etDisplayName.getText().toString().trim());
-                    mDatabase.child(key).child("phone").setValue(etPhoneNumber.getText().toString().trim());
-                    mDatabase.child(key).child("profilepic").setValue(downloadUri.toString());
-                    mProgress.dismiss();
-                    Toast.makeText(EditAccountActivity.this, "แก้ไขเรียบร้อย", Toast.LENGTH_SHORT).show();
-                    goToMain();
-                }
-            });
-        }else{
-            mProgress.setMessage("กำลังแก้ไข...");
-            mProgress.show();
-            key = FirebaseAuth.getInstance().getUid();
-            mDatabase.child(key).child("displayname").setValue(etDisplayName.getText().toString().trim());
-            mDatabase.child(key).child("phone").setValue(etPhoneNumber.getText().toString().trim());
-            mProgress.dismiss();
-            Toast.makeText(EditAccountActivity.this, "แก้ไขเรียบร้อย", Toast.LENGTH_SHORT).show();
-            goToMain();
+        final String displayName = etDisplayName.getText().toString().trim();
+        final String phoneNumber = etPhoneNumber.getText().toString().trim();
+        if (TextUtils.isEmpty(displayName)) {
+            etDisplayName.setError("กรุณากรอกชื่อที่แสดงในระบบ");
+        } else if (TextUtils.isEmpty(phoneNumber)) {
+            etPhoneNumber.setError("กรุณากรอกหมายเลขโทรศัพท์");
+        } else {
+            if (mImageUri != null) {
+                mProgress.setMessage("กำลังแก้ไข...");
+                mProgress.show();
+                final StorageReference filePath = mStorage.child("userpic").child(mImageUri.getLastPathSegment());
+                filePath.putFile(mImageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        downloadUri = taskSnapshot.getDownloadUrl();
+                        key = FirebaseAuth.getInstance().getUid();
+                        mDatabase.child(key).child("displayname").setValue(displayName);
+                        mDatabase.child(key).child("phone").setValue(phoneNumber);
+                        mDatabase.child(key).child("profilepic").setValue(downloadUri.toString());
+                        mProgress.dismiss();
+                        Toast.makeText(EditAccountActivity.this, "แก้ไขเรียบร้อย", Toast.LENGTH_SHORT).show();
+                        goToMain();
+                    }
+                });
+            } else {
+                mProgress.setMessage("กำลังแก้ไข...");
+                mProgress.show();
+                key = FirebaseAuth.getInstance().getUid();
+                mDatabase.child(key).child("displayname").setValue(displayName);
+                mDatabase.child(key).child("phone").setValue(phoneNumber);
+                mProgress.dismiss();
+                Toast.makeText(EditAccountActivity.this, "แก้ไขเรียบร้อย", Toast.LENGTH_SHORT).show();
+                goToMain();
+            }
         }
+
     }
 
     private void goToMain() {
@@ -222,7 +236,7 @@ public class EditAccountActivity extends AppCompatActivity implements View.OnCli
     public void onClick(View view) {
         if (view.getId() == R.id.btnConfirm) {
             startUpdate();
-        }else if(view.getId() == R.id.selectImage){
+        }else if(view.getId() == R.id.btnChangePic){
             Intent galleryIntent = new Intent(Intent.ACTION_GET_CONTENT);
             galleryIntent.setType("image/*");
             startActivityForResult(galleryIntent, GALLERY_REQUEST);
