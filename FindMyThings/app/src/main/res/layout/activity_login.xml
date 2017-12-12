@@ -64,6 +64,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="10dp"
+        android:textSize="18dp"
         android:text="Sign up here!"
         android:textColor="@android:color/white"
         android:textStyle="bold" />

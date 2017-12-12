@@ -3,6 +3,7 @@ package finalproject.se.kmitl.findmythings.activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -12,6 +13,7 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -67,7 +69,7 @@ public class NewPostActivity extends AppCompatActivity implements View.OnClickLi
         mProgress.setMessage("กำลังโพสต์...");
         mProgress.show();
         final String postDescription = mPostDesc.getText().toString().trim();
-        if(mImageUri != null){
+        if (mImageUri != null) {
             final StorageReference filePath = mStorage.child(fragmentType).child(mImageUri.getLastPathSegment());
             filePath.putFile(mImageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
@@ -105,13 +107,50 @@ public class NewPostActivity extends AppCompatActivity implements View.OnClickLi
 
                 }
             });
-        }else{
-            mProgress.hide();
-            Toast.makeText(NewPostActivity.this, "กรุณาใส่ภาพประกอบ", Toast.LENGTH_SHORT).show();
+        } else {
+            mStorage.child("newsfeed/noimagealpha.png").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                @Override
+                public void onSuccess(Uri uri) {
+                    Map<String, Object> map = new HashMap<>();
+                    key = mDatabase.push().getKey();
+                    map.put(key, "");
+                    mDatabase.updateChildren(map);
+                    DatabaseReference message_key = mDatabase.child(key);
+                    Map<String, Object> map2 = new HashMap<>();
+                    map2.put("title", getIntent().getStringExtra("title"));
+                    map2.put("image", uri.toString());
+                    map2.put("desc", postDescription);
+                    map2.put("date", getIntent().getStringExtra("date"));
+                    map2.put("key", FirebaseAuth.getInstance().getUid());
+                    map2.put("type", getIntent().getStringExtra("type"));
+                    message_key.updateChildren(map2);
+
+                    Map<String, Object> map3 = new HashMap<>();
+                    map3.put(key, "");
+                    newsFeedDatabase.updateChildren(map3);
+                    DatabaseReference message_key2 = newsFeedDatabase.child(key);
+                    Map<String, Object> map4 = new HashMap<>();
+                    map4.put("title", getIntent().getStringExtra("title"));
+                    map4.put("image", uri.toString());
+                    map4.put("desc", postDescription);
+                    map4.put("date", getIntent().getStringExtra("date"));
+                    map4.put("key", FirebaseAuth.getInstance().getUid());
+                    map4.put("type", getIntent().getStringExtra("type"));
+                    message_key2.updateChildren(map4);
+                    mProgress.dismiss();
+                    Toast.makeText(NewPostActivity.this, "โพสต์แล้วจ้าาา", Toast.LENGTH_SHORT).show();
+                    goToMain();
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(NewPostActivity.this, "Can't Load No Image Picture", Toast.LENGTH_SHORT).show();
+                }
+            });
         }
     }
 
-    private void goToMain(){
+    private void goToMain() {
         Intent intent = new Intent(NewPostActivity.this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
@@ -121,7 +160,6 @@ public class NewPostActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
         if (requestCode == GALLERY_REQUEST && resultCode == RESULT_OK) {
             mImageUri = data.getData();
             mSelectImage.setImageURI(mImageUri);

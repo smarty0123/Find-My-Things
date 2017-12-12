@@ -3,6 +3,7 @@ package finalproject.se.kmitl.findmythings.activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.graphics.Paint;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -45,6 +46,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         tvUsername = findViewById(R.id.etUserName);
         tvPassword = findViewById(R.id.etPassword);
         tvSignUp = findViewById(R.id.tvSignUp);
+        tvSignUp.setPaintFlags(tvSignUp.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         btnLogin = findViewById(R.id.btnLogin);
 
         mLoginProgress = new ProgressDialog(this);
