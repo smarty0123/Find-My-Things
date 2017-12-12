@@ -104,18 +104,18 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
             String displayName = etDisplayName.getText().toString().trim();
             String phoneNumber = etPhoneNumber.getText().toString().trim();
             if (TextUtils.isEmpty(email)) {
-                etEmail.setError("Email can't be empty.");
+                etEmail.setError("กรุณากรอกอีเมล");
             } else if (TextUtils.isEmpty(password)) {
-                etPassword.setError("Password can't be empty");
+                etPassword.setError("กรุณากรอกรหัสผ่าน");
             } else if (TextUtils.isEmpty(confirmPassword)) {
-                etConfirmPassword.setError("ConfirmPassword can't be empty");
+                etConfirmPassword.setError("กรุณากรอกยืนยันรหัสผ่าน");
             } else if (TextUtils.isEmpty(displayName)) {
-                etDisplayName.setError("DisplayName can't be empty");
+                etDisplayName.setError("กรุณากรอกชื่อที่แสดงในระบบ");
             } else if (TextUtils.isEmpty(phoneNumber)) {
-                etPhoneNumber.setError("PhoneNumber can't be empty");
+                etPhoneNumber.setError("กรุณากรอกหมายเลขโทรศัพท์");
             } else {
-                mRegProgress.setTitle("Registering User");
-                mRegProgress.setMessage("Please wait while we create your account!");
+                mRegProgress.setTitle("กำลังสมัครผู้ใช้งาน");
+                mRegProgress.setMessage("กรุณารอสักครู่");
                 mRegProgress.show();
                 registerUser(email, password, confirmPassword, displayName, phoneNumber);
             }

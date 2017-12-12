@@ -1,8 +1,10 @@
 package finalproject.se.kmitl.findmythings.activity;
 
+import android.app.DialogFragment;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -71,21 +73,25 @@ public class CreateNewPostActivity extends AppCompatActivity implements View.OnC
     public void onClick(View view) {
         if (view.getId() == R.id.btnNext) {
             String title = postTitle.getText().toString().trim();
-            getDatePicker();
-            Intent intent = new Intent(CreateNewPostActivity.this, NewPostActivity.class);
-            intent.putExtra("fragmenttype", getIntent().getStringExtra("fragmenttype"));
-            intent.putExtra("title", title);
-            intent.putExtra("type", type);
-            intent.putExtra("date", formatedDate);
-            startActivity(intent);
+            if (TextUtils.isEmpty(title)) {
+                postTitle.setError("กรุณาใส่ชื่อหัวข้อ");
+            }else {
+                getDatePicker();
+                Intent intent = new Intent(CreateNewPostActivity.this, NewPostActivity.class);
+                intent.putExtra("fragmenttype", getIntent().getStringExtra("fragmenttype"));
+                intent.putExtra("title", title);
+                intent.putExtra("type", type);
+                intent.putExtra("date", formatedDate);
+                startActivity(intent);
+            }
         }
     }
 
     private void getDatePicker() {
+        datePicker.setMaxDate(new Date().getTime());
         int   day  = datePicker.getDayOfMonth();
         int   month= datePicker.getMonth();
         int   year = datePicker.getYear()-1900;
-
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
         formatedDate = sdf.format(new Date(year, month, day));
 

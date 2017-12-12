@@ -64,12 +64,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             String password = tvPassword.getText().toString().trim();
 
             if (TextUtils.isEmpty(email)) {
-                tvUsername.setError("Email can't be empty.");
+                tvUsername.setError("กรุณากรอกอีเมล");
             } else if (TextUtils.isEmpty(password)) {
-                tvPassword.setError("Password can't be empty");
+                tvPassword.setError("กรุณากรอกรหัสผ่าน");
             } else {
-                mLoginProgress.setTitle("Logging in");
-                mLoginProgress.setMessage("Please wait while logging in");
+                mLoginProgress.setTitle("กำลังเข้าสู่ระบบ");
+                mLoginProgress.setMessage("โปรดรอสักครู่");
                 mLoginProgress.setCanceledOnTouchOutside(false);
                 mLoginProgress.show();
                 loginUser(email, password);

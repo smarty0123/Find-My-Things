@@ -60,7 +60,7 @@
         android:layout_gravity="center"
         android:calendarViewShown="false"
         android:datePickerMode="spinner"
-        android:inputType="text|date"></DatePicker>
+        android:inputType="text|date" />
 
     <Button
         android:id="@+id/btnNext"
