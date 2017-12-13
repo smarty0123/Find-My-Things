@@ -206,6 +206,7 @@ public class MyPostActivity extends AppCompatActivity {
             String desc = (String) ((DataSnapshot) i.next()).getValue();
             String image = (String) ((DataSnapshot) i.next()).getValue();
             String userKey = (String) ((DataSnapshot) i.next()).getValue();
+            String status = (String) ((DataSnapshot) i.next()).getValue();
             String title = (String) ((DataSnapshot) i.next()).getValue();
             String type = (String) ((DataSnapshot) i.next()).getValue();
             String key = dataSnapshot.getKey();

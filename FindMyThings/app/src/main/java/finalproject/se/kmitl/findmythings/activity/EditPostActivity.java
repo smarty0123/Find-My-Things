@@ -3,6 +3,7 @@ package finalproject.se.kmitl.findmythings.activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.graphics.Color;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -33,6 +34,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 
 
 import finalproject.se.kmitl.findmythings.R;
@@ -64,6 +67,8 @@ public class EditPostActivity extends AppCompatActivity implements View.OnClickL
     private DatabaseReference mDatabase;
     private Uri downloadUri;
     private ImageView profileImage;
+    private TextView tvStatus;
+    private Button btnChangeStatus;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,10 +90,15 @@ public class EditPostActivity extends AppCompatActivity implements View.OnClickL
         etDescription = findViewById(R.id.etDescription);
         postImage = findViewById(R.id.postImage);
         btnConfirm = findViewById(R.id.btnConfirm);
+        tvStatus = findViewById(R.id.tvStatus);
 
         mProgress = new ProgressDialog(this);
 
         fragmentType = getIntent().getStringExtra("fragmenttype");
+
+        btnChangeStatus = findViewById(R.id.btnChangeStatus);
+        btnChangeStatus.setOnClickListener(this);
+
 
         postImage.setOnClickListener(this);
         btnConfirm.setOnClickListener(this);
@@ -96,6 +106,8 @@ public class EditPostActivity extends AppCompatActivity implements View.OnClickL
         mStorage = FirebaseStorage.getInstance().getReference();
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
+
+        key = getIntent().getStringExtra("key");
 
     }
 
@@ -121,7 +133,7 @@ public class EditPostActivity extends AppCompatActivity implements View.OnClickL
                                 String phoneNum = (String) child.getValue();
                             } else if (child.getKey().toString().equals("profilepic")) {
                                 String img = (String) child.getValue();
-                                Glide.with(EditPostActivity.this).load(Uri.parse(img)).into(profileImage);
+                                Glide.with(getApplicationContext()).load(Uri.parse(img)).into(profileImage);
                             }
 
                         }
@@ -185,7 +197,15 @@ public class EditPostActivity extends AppCompatActivity implements View.OnClickL
     private void initInformation() {
         etTitle.setText(getIntent().getStringExtra("title"));
         etDescription.setText(getIntent().getStringExtra("desc"));
-        Glide.with(this).load(Uri.parse(getIntent().getStringExtra("image"))).into(postImage);
+        if (getIntent().getStringExtra("status").equals("true")) {
+            tvStatus.setText("เสร็จสิ้น");
+            tvStatus.setTextColor(Color.rgb(0, 255, 0));
+        } else {
+            tvStatus.setText("ยังไม่เสร็จ");
+            tvStatus.setTextColor(Color.rgb(255, 0, 0));
+        }
+
+        Glide.with(getApplicationContext()).load(Uri.parse(getIntent().getStringExtra("image"))).into(postImage);
     }
 
     private void startUpdate() {
@@ -233,69 +253,72 @@ public class EditPostActivity extends AppCompatActivity implements View.OnClickL
         finish();
     }
 
-    private void updateNewsFeedDB(final Boolean isChoosePic){
+    private void updateNewsFeedDB(final Boolean isChoosePic) {
         mDatabase.child("newsfeed").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if(dataSnapshot.hasChild(key)){
-                    if(isChoosePic){
+                if (dataSnapshot.hasChild(key)) {
+                    if (isChoosePic) {
                         mDatabase.child("newsfeed").child(key).child("title").setValue(etTitle.getText().toString().trim());
                         mDatabase.child("newsfeed").child(key).child("desc").setValue(etDescription.getText().toString().trim());
                         mDatabase.child("newsfeed").child(key).child("image").setValue(downloadUri.toString());
-                    }else{
+                    } else {
                         mDatabase.child("newsfeed").child(key).child("title").setValue(etTitle.getText().toString().trim());
                         mDatabase.child("newsfeed").child(key).child("desc").setValue(etDescription.getText().toString().trim());
                     }
                 }
             }
+
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                Toast.makeText(EditPostActivity.this, databaseError.toException().getMessage(), Toast.LENGTH_SHORT);
+                Toast.makeText(EditPostActivity.this, databaseError.toException().getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    private void updateFindDB(final Boolean isChoosePic){
+    private void updateFindDB(final Boolean isChoosePic) {
         mDatabase.child("find").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if(dataSnapshot.hasChild(key)){
-                    if(isChoosePic){
+                if (dataSnapshot.hasChild(key)) {
+                    if (isChoosePic) {
                         mDatabase.child("find").child(key).child("title").setValue(etTitle.getText().toString().trim());
                         mDatabase.child("find").child(key).child("desc").setValue(etDescription.getText().toString().trim());
                         mDatabase.child("find").child(key).child("image").setValue(downloadUri.toString());
-                    }else{
+                    } else {
                         mDatabase.child("find").child(key).child("title").setValue(etTitle.getText().toString().trim());
                         mDatabase.child("find").child(key).child("desc").setValue(etDescription.getText().toString().trim());
                     }
 
                 }
             }
+
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                Toast.makeText(EditPostActivity.this, databaseError.toException().getMessage(), Toast.LENGTH_SHORT);
+                Toast.makeText(EditPostActivity.this, databaseError.toException().getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    private void updateFoundDB(final Boolean isChoosePic){
+    private void updateFoundDB(final Boolean isChoosePic) {
         mDatabase.child("found").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                if(dataSnapshot.hasChild(key)){
-                    if(isChoosePic){
+                if (dataSnapshot.hasChild(key)) {
+                    if (isChoosePic) {
                         mDatabase.child("found").child(key).child("title").setValue(etTitle.getText().toString().trim());
                         mDatabase.child("found").child(key).child("desc").setValue(etDescription.getText().toString().trim());
                         mDatabase.child("found").child(key).child("image").setValue(downloadUri.toString());
-                    }else{
+                    } else {
                         mDatabase.child("found").child(key).child("title").setValue(etTitle.getText().toString().trim());
                         mDatabase.child("found").child(key).child("desc").setValue(etDescription.getText().toString().trim());
                     }
                 }
             }
+
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                Toast.makeText(EditPostActivity.this, databaseError.toException().getMessage(), Toast.LENGTH_SHORT);
+                Toast.makeText(EditPostActivity.this, databaseError.toException().getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -305,7 +328,20 @@ public class EditPostActivity extends AppCompatActivity implements View.OnClickL
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == GALLERY_REQUEST && resultCode == RESULT_OK) {
             mImageUri = data.getData();
-            postImage.setImageURI(mImageUri);
+            CropImage.activity(mImageUri)
+                    .setGuidelines(CropImageView.Guidelines.ON)
+                    .setAspectRatio(1, 1)
+                    .start(this);
+        }
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+            if (resultCode == RESULT_OK) {
+                mImageUri = result.getUri();
+                postImage.setImageURI(mImageUri);
+            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                Exception error = result.getError();
+                Toast.makeText(EditPostActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
@@ -317,11 +353,19 @@ public class EditPostActivity extends AppCompatActivity implements View.OnClickL
             startActivityForResult(galleryIntent, GALLERY_REQUEST);
         } else if (view.getId() == R.id.btnConfirm) {
             String title = etTitle.getText().toString().trim();
-            if(TextUtils.isEmpty(title)){
+            if (TextUtils.isEmpty(title)) {
                 etTitle.setError("กรุณาใส่ชื่อหัวข้อ");
-            }else{
+            } else {
                 startUpdate();
             }
+        } else if (view.getId() == R.id.btnChangeStatus) {
+            Intent intent = new Intent(EditPostActivity.this, ConfirmExchangeActivity.class);
+            intent.putExtra("title", etTitle.getText().toString().trim());
+            intent.putExtra("desc", etDescription.getText().toString().trim());
+            intent.putExtra("fragmenttype", fragmentType);
+            intent.putExtra("key", key);
+            intent.putExtra("image", getIntent().getStringExtra("image"));
+            startActivity(intent);
         }
     }
 

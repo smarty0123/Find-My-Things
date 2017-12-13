@@ -3,6 +3,7 @@ package finalproject.se.kmitl.findmythings.activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.graphics.Color;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -55,6 +56,8 @@ public class PostDescription extends AppCompatActivity implements View.OnClickLi
     private ImageView userPostImage;
     private TextView userPostName;
     private TextView tvPostDate;
+    private String status;
+    private TextView tvStatus;
 
     @Override
 
@@ -69,6 +72,7 @@ public class PostDescription extends AppCompatActivity implements View.OnClickLi
     }
 
     private void initInstance() {
+        tvStatus = findViewById(R.id.tvStatus);
         tvPostDate = findViewById(R.id.postDate);
         tvTitle = findViewById(R.id.tvTitle);
         postImage = findViewById(R.id.postImage);
@@ -185,6 +189,14 @@ public class PostDescription extends AppCompatActivity implements View.OnClickLi
                     description = (String) dataSnapshot.child("desc").getValue();
                     keyUser = (String) dataSnapshot.child("key").getValue();
                     date = (String) dataSnapshot.child("date").getValue();
+                    status = (String) dataSnapshot.child("status").getValue();
+                    if(status.equals("true")){
+                        tvStatus.setText("เสร็จสิ้น");
+                        tvStatus.setTextColor(Color.rgb(0,255, 0));
+                    }else{
+                        tvStatus.setText("ยังไม่เสร็จ");
+                        tvStatus.setTextColor(Color.rgb(255,0, 0));
+                    }
                     tvPostDate.setText("โพสต์วันที่ "+ date);
                     Glide.with(getApplicationContext()).load(Uri.parse(image)).into(postImage);
                     tvTitle.setText(title);
@@ -272,6 +284,7 @@ public class PostDescription extends AppCompatActivity implements View.OnClickLi
             intent.putExtra("desc", description);
             intent.putExtra("image", image);
             intent.putExtra("date", date);
+            intent.putExtra("status", status);
             intent.putExtra("fragmenttype", getIntent().getStringExtra("from"));
             startActivity(intent);
         }

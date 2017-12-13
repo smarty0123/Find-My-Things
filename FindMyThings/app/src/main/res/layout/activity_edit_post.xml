@@ -64,6 +64,40 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="8dp"
+                            android:text="สถานะ: "
+                            android:textSize="20dp" />
+
+                        <TextView
+                            android:id="@+id/tvStatus"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="ยังหาไม่เจอ"
+                            android:textSize="24dp" />
+                    </LinearLayout>
+
+                    <Button
+                        android:id="@+id/btnChangeStatus"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="16dp"
+                        android:text="เปลี่ยนสถานะ" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:orientation="vertical">
 
                     <TextView
@@ -108,35 +142,6 @@
                     android:adjustViewBounds="true"
                     android:scaleType="centerCrop" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:orientation="vertical">
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="8dp"
-                            android:text="สถานะ: "
-                            android:textSize="20dp" />
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="หาเจอแล้ว"
-                            android:textSize="24dp"/>
-                    </LinearLayout>
-
-                    <Button
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginTop="16dp"
-                        android:text="เปลี่ยนสถานะ" />
-                </LinearLayout>
-
                 <Button
                     android:id="@+id/btnConfirm"
                     android:layout_width="wrap_content"
@@ -150,14 +155,12 @@
         </ScrollView>
     </android.support.design.widget.AppBarLayout>
 
-    <!--<android.support.design.widget.NavigationView
+    <android.support.design.widget.NavigationView
         android:id="@+id/nav_view"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/nav_header"
-        app:menu="@menu/activity_main_drawer" />-->
-
-
+        app:menu="@menu/activity_main_drawer" />
 </android.support.v4.widget.DrawerLayout>

@@ -13,15 +13,11 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -91,6 +87,7 @@ public class NewPostActivity extends AppCompatActivity implements View.OnClickLi
                     map2.put("date", getIntent().getStringExtra("date"));
                     map2.put("key", FirebaseAuth.getInstance().getUid());
                     map2.put("type", getIntent().getStringExtra("type"));
+                    map2.put("status", "false");
                     message_key.updateChildren(map2);
 
                     Map<String, Object> map3 = new HashMap<>();
@@ -104,6 +101,7 @@ public class NewPostActivity extends AppCompatActivity implements View.OnClickLi
                     map4.put("date", getIntent().getStringExtra("date"));
                     map4.put("key", FirebaseAuth.getInstance().getUid());
                     map4.put("type", getIntent().getStringExtra("type"));
+                    map4.put("status", "false");
                     message_key2.updateChildren(map4);
                     mProgress.dismiss();
                     Toast.makeText(NewPostActivity.this, "โพสต์แล้วจ้าาา", Toast.LENGTH_SHORT).show();
@@ -127,6 +125,7 @@ public class NewPostActivity extends AppCompatActivity implements View.OnClickLi
                     map2.put("date", getIntent().getStringExtra("date"));
                     map2.put("key", FirebaseAuth.getInstance().getUid());
                     map2.put("type", getIntent().getStringExtra("type"));
+                    map2.put("status", "false");
                     message_key.updateChildren(map2);
 
                     Map<String, Object> map3 = new HashMap<>();
@@ -140,6 +139,7 @@ public class NewPostActivity extends AppCompatActivity implements View.OnClickLi
                     map4.put("date", getIntent().getStringExtra("date"));
                     map4.put("key", FirebaseAuth.getInstance().getUid());
                     map4.put("type", getIntent().getStringExtra("type"));
+                    map4.put("status", "false");
                     message_key2.updateChildren(map4);
                     mProgress.dismiss();
                     Toast.makeText(NewPostActivity.this, "โพสต์แล้วจ้าาา", Toast.LENGTH_SHORT).show();
