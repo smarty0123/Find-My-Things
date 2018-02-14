@@ -191,10 +191,10 @@ public class PostDescription extends AppCompatActivity implements View.OnClickLi
                     date = (String) dataSnapshot.child("date").getValue();
                     status = (String) dataSnapshot.child("status").getValue();
                     if(status.equals("true")){
-                        tvStatus.setText("เสร็จสิ้น");
+                        tvStatus.setText("ยืนยันแล้ว");
                         tvStatus.setTextColor(Color.rgb(0,255, 0));
                     }else{
-                        tvStatus.setText("ยังไม่เสร็จ");
+                        tvStatus.setText("รอการยืนยัน");
                         tvStatus.setTextColor(Color.rgb(255,0, 0));
                     }
                     tvPostDate.setText("โพสต์วันที่ "+ date);

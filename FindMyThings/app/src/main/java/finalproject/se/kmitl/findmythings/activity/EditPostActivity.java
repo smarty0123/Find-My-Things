@@ -198,10 +198,10 @@ public class EditPostActivity extends AppCompatActivity implements View.OnClickL
         etTitle.setText(getIntent().getStringExtra("title"));
         etDescription.setText(getIntent().getStringExtra("desc"));
         if (getIntent().getStringExtra("status").equals("true")) {
-            tvStatus.setText("เสร็จสิ้น");
+            tvStatus.setText("ยืนยันแล้ว");
             tvStatus.setTextColor(Color.rgb(0, 255, 0));
         } else {
-            tvStatus.setText("ยังไม่เสร็จ");
+            tvStatus.setText("รอการยืนยัน");
             tvStatus.setTextColor(Color.rgb(255, 0, 0));
         }
 
